@@ -1,5 +1,5 @@
 // VGC 戦績トラッカー Service Worker — アプリ本体＋スプライトをキャッシュして完全オフライン化
-const SHELL = 'vgc-shell-v1';
+const SHELL = 'vgc-shell-v2';
 const SPRITES = 'vgc-sprites-v1';
 const SHELL_ASSETS = [
   './', './index.html', './pokedex-names.js', './manifest.json',

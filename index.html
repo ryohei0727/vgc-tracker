@@ -22,28 +22,32 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
   .lbl{font-size:12px;color:var(--sub);font-weight:600;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .slots{display:flex;gap:6px;flex-wrap:wrap;min-height:54px}
+  .slots{display:flex;gap:8px;flex-wrap:wrap;min-height:58px}
   .ico{width:46px;height:46px;object-fit:contain}
-  .chip{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--card2);padding:2px;display:flex;flex-direction:column;align-items:center;width:56px}
-  .chip .nm{font-size:9px;color:var(--sub);line-height:1.1;text-align:center;max-width:54px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-  .chip .rm{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;background:var(--loss);color:#fff;border:none;font-size:13px;line-height:1;cursor:pointer}
+  .chip{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--card2);padding:2px;display:flex;flex-direction:column;align-items:center;width:58px}
+  .chip .nm{font-size:9px;color:var(--sub);line-height:1.1;text-align:center;max-width:56px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .chip .rm{position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:var(--loss);color:#fff;border:none;font-size:13px;line-height:1;cursor:pointer}
   .chip.sel{border-color:var(--accent);background:var(--accent-bg)}
   .chip.pick{cursor:pointer}
-  .chip .ld{position:absolute;top:-7px;left:-7px;background:var(--accent);color:#fff;font-size:8px;border-radius:6px;padding:0 4px}
-  .chip .fm{position:absolute;bottom:13px;background:var(--amber);color:#2a1c00;font-size:8px;border-radius:5px;padding:0 3px;font-weight:700}
+  .chip .ld{position:absolute;top:-8px;left:-8px;background:var(--accent);color:#fff;font-size:8px;border-radius:6px;padding:0 4px}
+  .chip .fm{position:absolute;bottom:13px;background:#3a3d44;color:#dfe2e8;font-size:8px;border-radius:5px;padding:0 3px}
+  .chip .mtog{position:absolute;top:-8px;right:-8px;background:var(--amber);color:#2a1c00;font-size:8px;border:none;border-radius:6px;padding:1px 4px;font-weight:700;cursor:pointer}
+  .chip .mtog.off{background:#3a3d44;color:var(--muted);font-weight:600}
   button{font-family:inherit}
   .btn{border:1px solid var(--line);background:var(--card2);color:var(--txt);border-radius:10px;padding:9px 14px;font-size:14px;cursor:pointer}
   .btn:active{transform:scale(.98)}
   .btn.sm{padding:6px 10px;font-size:12px}
-  .btn.add{border-style:dashed;color:var(--accent);width:56px;height:54px;font-size:22px;padding:0;background:none}
+  .btn.add{border-style:dashed;color:var(--accent);width:58px;height:58px;font-size:22px;padding:0;background:none}
   .btn.primary{background:var(--accent);color:#0a1722;border-color:var(--accent);width:100%;font-weight:700;padding:13px}
+  .btn.ghost{background:none}
   .btn.win{flex:1;border-color:var(--win)} .btn.win.on{background:var(--win-bg);color:var(--win);font-weight:700}
   .btn.loss{flex:1;border-color:var(--loss)} .btn.loss.on{background:var(--loss-bg);color:var(--loss);font-weight:700}
   input,textarea,select{font-family:inherit;font-size:15px;width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card2);color:var(--txt)}
   textarea{resize:vertical;min-height:60px}
-  .setmemo{display:flex;align-items:center;gap:6px;margin-top:6px}
-  .setmemo img{width:28px;height:28px;object-fit:contain}
-  .setmemo input{font-size:13px;padding:6px 8px}
+  .setmemo{display:flex;align-items:center;gap:8px;margin-top:8px}
+  .setmemo img{width:30px;height:30px;object-fit:contain;flex-shrink:0}
+  .setmemo .nmw{font-size:12px;width:78px;flex-shrink:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:var(--sub)}
+  .setmemo select,.setmemo input{font-size:13px;padding:7px 8px}
   nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:5}
   nav button{flex:1;border:none;background:none;color:var(--muted);padding:10px 0;font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
   nav button.on{color:var(--accent)}
@@ -61,8 +65,8 @@
   .stat{display:flex;align-items:center;gap:8px;margin:8px 0}
   .bar{flex:1;height:9px;background:var(--card2);border-radius:5px;overflow:hidden}
   .bar>i{display:block;height:100%;border-radius:5px}
-  .pct{font-size:12px;font-variant-numeric:tabular-nums;width:96px;text-align:right;color:var(--sub)}
-  .tags{display:flex;gap:4px;flex-wrap:wrap}
+  .pct{font-size:12px;font-variant-numeric:tabular-nums;width:104px;text-align:right;color:var(--sub)}
+  .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px}
   .tag{font-size:11px;background:var(--card2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--sub)}
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:none;align-items:flex-end}
   .overlay.on{display:flex}
@@ -77,6 +81,7 @@
   .formrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
   .formopt{border:1px solid var(--line);background:var(--card2);color:var(--txt);border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
   .formopt img{width:26px;height:26px;object-fit:contain}
+  .banner{background:var(--accent-bg);border:1px solid var(--accent);color:var(--accent);border-radius:12px;padding:8px 12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
 </style>
 </head>
 <body>
@@ -88,6 +93,7 @@
 <main>
   <!-- ===== 記録 ===== -->
   <section class="view on" id="v-rec">
+    <div class="banner" id="editBanner" style="display:none"><span>過去の対戦を編集中</span><button class="btn sm ghost" id="cancelEdit">キャンセル</button></div>
     <div class="card">
       <div class="lbl">使用する自分の構築</div>
       <select id="teamSel"></select>
@@ -100,14 +106,14 @@
     </div>
 
     <div class="card">
-      <div class="lbl">相手の選出（最大4・先頭2=先発）</div>
+      <div class="lbl">相手の選出（最大4・先頭2=先発 / メガはタップで切替）</div>
       <div class="slots" id="oppSelSlots"></div>
-      <p class="hint">↑の相手6体をタップで選出に追加</p>
+      <p class="hint">↑の相手6体をタップで選出に追加。メガ可なら橙バッジをタップで切替</p>
       <div id="setMemos"></div>
     </div>
 
     <div class="card">
-      <div class="lbl">自分の選出（最大4・先頭2=先発）</div>
+      <div class="lbl">自分の選出（最大4・先頭2=先発 / メガはタップで切替）</div>
       <div class="slots" id="mySelSlots"></div>
     </div>
 
@@ -149,7 +155,7 @@
     <div class="card"><div id="weakList"><p class="empty">データ不足</p></div></div>
     <div class="seclabel">よく当たる相手（頻度・先発率）</div>
     <div class="card"><div id="faceList"><p class="empty">データ不足</p></div></div>
-    <div class="seclabel">相手の型傾向（記録した持ち物・テラス）</div>
+    <div class="seclabel">相手の型傾向（持ち物・メガ）</div>
     <div class="card"><div id="setList"><p class="empty">型メモがありません</p></div></div>
     <div class="seclabel">自分の選出率・選出時勝率</div>
     <div class="card"><div id="myList"><p class="empty">構築未選択</p></div></div>
@@ -185,7 +191,6 @@
   <button data-v="data"><span class="ni">⚙</span>データ</button>
 </nav>
 
-<!-- ピッカー -->
 <div class="overlay" id="picker">
   <div class="sheet">
     <h3 id="pickTitle">ポケモンを選択</h3>
@@ -203,37 +208,50 @@ const norm = s => (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().
 const jaName = d => (window.POKE_JA && POKE_JA[d-1]) || ('#'+d);
 const enName = d => (window.POKE_EN && POKE_EN[d-1]) || '';
 const baseSid = d => norm(enName(d));
-// entry: {d, f(form label|null), s(showdown sid)}
-const mkEntry = (d,f,s)=>({d, f:f||null, s:s||baseSid(d)});
-const keyOf = e => e.d + (e.f? '|'+e.f : '');
+// entry: {d, f(恒久フォルム名|null), s(スプライトid), m(メガ名|null)}
+const mkEntry = (d,f,s)=>({d, f:f||null, s:s||baseSid(d), m:null});
+const selKey = e => e.d + (e.f? '|'+e.f : '');           // 種族+恒久フォルム（メガ非依存）
 const iconOf = e => SD(e.s);
-const nameOf = e => jaName(e.d) + (e.f? ' '+e.f : '');
-const FB = "this.onerror=null;this.src=this.dataset.fb";
+const nameOf = e => jaName(e.d) + (e.f? ' '+e.f : '') + (e.m? ' '+e.m : '');
 
-// 使用率トップ20（Reg M-B / Smogon Major Live サンプル）
-const TOP20 = [
-  [445,null],[902,null],[1013,null],[727,null],[983,null],[547,null],[670,'メガ','floette-eternal'],
-  [903,null],[6,'メガY','charizard-megay'],[279,null],[376,'メガ','metagross-mega'],[861,null],
-  [1018,null],[260,'メガ','swampert-mega'],[398,'メガ','staraptor-mega'],[1000,null],[981,null],
-  [700,null],[655,'メガ','delphox-mega'],[303,'メガ','mawile-mega']
-].map(a=>mkEntry(a[0],a[1],a[2]));
-
-// フォルム定義（dex -> 代替フォルム）。未定義はベースのみ。未存在spriteはonerrorでベースに自動フォールバック
-const FORMS = {
-  6:[['メガY','charizard-megay'],['メガX','charizard-megax']],
-  3:[['メガ','venusaur-mega']], 9:[['メガ','blastoise-mega']],
-  94:[['メガ','gengar-mega']], 130:[['メガ','gyarados-mega']], 142:[['メガ','aerodactyl-mega']],
-  212:[['メガ','scizor-mega']], 248:[['メガ','tyranitar-mega']], 257:[['メガ','blaziken-mega']],
-  282:[['メガ','gardevoir-mega']], 303:[['メガ','mawile-mega']], 373:[['メガ','salamence-mega']],
-  376:[['メガ','metagross-mega']], 445:[['メガ','garchomp-mega']], 448:[['メガ','lucario-mega']],
-  475:[['メガ','gallade-mega']], 260:[['メガ','swampert-mega']], 398:[['メガ','staraptor-mega']],
-  655:[['メガ','delphox-mega']], 668:[['メガ','pyroar-mega']], 670:[['メガ','floette-eternal'],['永遠の花','floette-eternal']],
+// 恒久フォルム（ピッカーで選択）: リージョン/霊獣/ロトム/ウーラオス/パルデアケンタロス/フラエッテ永遠
+const PERM_FORMS = {
   26:[['アローラ','raichu-alola']], 38:[['アローラ','ninetales-alola']], 105:[['アローラ','marowak-alola']],
   479:[['ウォッシュ','rotom-wash'],['ヒート','rotom-heat'],['フロスト','rotom-frost'],['カット','rotom-mow'],['スピン','rotom-fan']],
   641:[['霊獣','tornadus-therian']], 642:[['霊獣','thundurus-therian']], 645:[['霊獣','landorus-therian']],
-  892:[['連撃','urshifu-rapidstrike'],['一撃','urshifu']],
-  128:[['パルデア格闘','tauros-paldeacombat'],['パルデア炎','tauros-paldeablaze'],['パルデア水','tauros-paldeaaqua']]
+  892:[['連撃','urshifu-rapidstrike']],
+  128:[['パルデア格闘','tauros-paldeacombat'],['パルデア炎','tauros-paldeablaze'],['パルデア水','tauros-paldeaaqua']],
+  670:[['永遠の花','floette-eternal']]
 };
+// メガ（選出時にトグル）。複数=チャリ/ミュウツー等。未存在spriteはonerrorでベースにフォールバック
+const MEGAS = {
+  3:[['メガ','venusaur-mega']],6:[['メガY','charizard-megay'],['メガX','charizard-megax']],9:[['メガ','blastoise-mega']],
+  15:[['メガ','beedrill-mega']],18:[['メガ','pidgeot-mega']],65:[['メガ','alakazam-mega']],80:[['メガ','slowbro-mega']],
+  94:[['メガ','gengar-mega']],115:[['メガ','kangaskhan-mega']],127:[['メガ','pinsir-mega']],130:[['メガ','gyarados-mega']],
+  142:[['メガ','aerodactyl-mega']],150:[['メガX','mewtwo-megax'],['メガY','mewtwo-megay']],181:[['メガ','ampharos-mega']],
+  208:[['メガ','steelix-mega']],212:[['メガ','scizor-mega']],214:[['メガ','heracross-mega']],229:[['メガ','houndoom-mega']],
+  248:[['メガ','tyranitar-mega']],254:[['メガ','sceptile-mega']],257:[['メガ','blaziken-mega']],260:[['メガ','swampert-mega']],
+  282:[['メガ','gardevoir-mega']],302:[['メガ','sableye-mega']],303:[['メガ','mawile-mega']],306:[['メガ','aggron-mega']],
+  308:[['メガ','medicham-mega']],310:[['メガ','manectric-mega']],319:[['メガ','sharpedo-mega']],323:[['メガ','camerupt-mega']],
+  334:[['メガ','altaria-mega']],354:[['メガ','banette-mega']],359:[['メガ','absol-mega']],362:[['メガ','glalie-mega']],
+  373:[['メガ','salamence-mega']],376:[['メガ','metagross-mega']],380:[['メガ','latias-mega']],381:[['メガ','latios-mega']],
+  384:[['メガ','rayquaza-mega']],398:[['メガ','staraptor-mega']],428:[['メガ','lopunny-mega']],445:[['メガ','garchomp-mega']],
+  448:[['メガ','lucario-mega']],460:[['メガ','abomasnow-mega']],475:[['メガ','gallade-mega']],531:[['メガ','audino-mega']],
+  655:[['メガ','delphox-mega']],668:[['メガ','pyroar-mega']],670:[['メガ','floette-eternal']],719:[['メガ','diancie-mega']]
+};
+
+// 使用率トップ20（ベース/恒久フォルム。メガは選出時トグル）
+const TOP20 = [
+  [445],[902],[1013],[727],[983],[547],[670,'永遠の花','floette-eternal'],[903],[6],[279],
+  [376],[861],[1018],[260],[398],[1000],[981],[700],[655],[303]
+].map(a=>mkEntry(a[0],a[1],a[2]));
+
+// 持ち物（プルダウン・集計用）
+const ITEMS = ["こだわりハチマキ","こだわりメガネ","こだわりスカーフ","いのちのたま","とつげきチョッキ","きあいのタスキ",
+  "オボンのみ","ラムのみ","たべのこし","しんかのきせき","ゴツゴツメット","あつぞこブーツ","ふうせん","メンタルハーブ",
+  "あんぜんゴーグル","おうじゃのしるし","だっしゅつパック","レッドカード","ひかりのねんど","しめったいわ","さらさらいわ",
+  "あついいわ","つめたいいわ","かえんだま","でんきだま","しんぴのしずく","もくたん","じしゃく","くろいメガネ","シルクのスカーフ",
+  "ヨプのみ","イトケのみ","オッカのみ","ソクノのみ","ヤチェのみ","ハバンのみ","メガストーン","その他"];
 
 const INDEX = (window.POKE_JA||[]).map((ja,i)=>({d:i+1, ja, e:(POKE_EN[i]||''), j:ja.toLowerCase(), el:(POKE_EN[i]||'').toLowerCase()}));
 
@@ -245,27 +263,25 @@ let logs = load(LS.logs, []);
 let teams = load(LS.teams, []);
 let activeId = load(LS.active, null);
 let draft = {opp:[], oppSel:[], mySel:[], sets:{}, result:null};
+let editingId = null;
 function activeTeam(){ return teams.find(t=>t.id===activeId) || teams[0] || null; }
+const clone = o => JSON.parse(JSON.stringify(o));
 
-// ===== ピッカー（フォルム対応 + Top20優先）=====
+// ===== ピッカー（恒久フォルムのみ / メガ確認なし / Top20優先）=====
 let pickCb=null;
 function openPicker(title, cb){
-  pickCb=cb;
-  document.getElementById('pickTitle').textContent=title;
+  pickCb=cb; document.getElementById('pickTitle').textContent=title;
   const s=document.getElementById('pickSearch'); s.value=''; renderPick('');
-  document.getElementById('picker').classList.add('on');
-  setTimeout(()=>s.focus(),50);
+  document.getElementById('picker').classList.add('on'); setTimeout(()=>s.focus(),50);
 }
 function closePicker(){ document.getElementById('picker').classList.remove('on'); pickCb=null; }
 function giHTML(e){
   return `<div class="gi" data-pd="${e.d}" data-pf="${e.f||''}" data-ps="${e.s}">
-    <img class="ico" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FB}" alt="${nameOf(e)}">
+    <img class="ico" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="this.onerror=null;this.src=this.dataset.fb" alt="${nameOf(e)}">
     <span class="nm">${nameOf(e)}</span></div>`;
 }
 function renderPick(q){
-  q=q.trim().toLowerCase();
-  const body=document.getElementById('pickBody');
-  let html='';
+  q=q.trim().toLowerCase(); const body=document.getElementById('pickBody'); let html='';
   if(!q){
     html += '<div class="seclbl">使用率トップ20</div><div class="grid">'+TOP20.map(giHTML).join('')+'</div>';
     html += '<div class="seclbl">全ポケモン</div><div class="grid">'+INDEX.slice(0,40).map(p=>giHTML(mkEntry(p.d))).join('')+'</div>';
@@ -277,39 +293,41 @@ function renderPick(q){
 }
 document.getElementById('pickSearch').addEventListener('input', e=>renderPick(e.target.value));
 document.getElementById('pickBody').addEventListener('click', e=>{
+  const fo=e.target.closest('.formopt');
+  if(fo){ commitPick(mkEntry(+fo.dataset.fd, fo.dataset.ff||null, fo.dataset.fs)); return; }
   const el=e.target.closest('.gi'); if(!el) return;
   const d=+el.dataset.pd, pf=el.dataset.pf, ps=el.dataset.ps;
-  // Top20で既にフォルム指定済みならそのまま確定
-  if(pf){ commitPick(mkEntry(d, pf, ps)); return; }
-  const forms = FORMS[d];
-  if(forms){ showForms(d, forms); }      // フォルム選択へ
+  if(pf){ commitPick(mkEntry(d, pf, ps)); return; }            // Top20の恒久フォルム指定済
+  const forms = PERM_FORMS[d];
+  if(forms){ showForms(d, forms); }                            // 恒久フォルム選択へ（メガは出さない）
   else commitPick(mkEntry(d));
 });
 function showForms(d, forms){
-  const body=document.getElementById('pickBody');
-  const opts = [['ベース', baseSid(d)], ...forms];
-  body.innerHTML = `<div class="seclbl">${jaName(d)} のフォルム</div><div class="formrow">`+
+  const opts=[['ベース', baseSid(d)], ...forms];
+  document.getElementById('pickBody').innerHTML =
+    `<div class="seclbl">${jaName(d)} のフォルム</div><div class="formrow">`+
     opts.map(o=>`<button class="formopt" data-fd="${d}" data-ff="${o[0]==='ベース'?'':o[0]}" data-fs="${o[1]}">
-      <img src="${SD(o[1])}" data-fb="${SD(baseSid(d))}" onerror="${FB}" alt="">${o[0]}</button>`).join('')+'</div>';
+      <img src="${SD(o[1])}" data-fb="${SD(baseSid(d))}" onerror="this.onerror=null;this.src=this.dataset.fb" alt="">${o[0]}</button>`).join('')+'</div>';
 }
-document.getElementById('pickBody').addEventListener('click', e=>{
-  const b=e.target.closest('.formopt'); if(!b) return;
-  commitPick(mkEntry(+b.dataset.fd, b.dataset.ff||null, b.dataset.fs));
-});
 function commitPick(entry){ if(pickCb) pickCb(entry); closePicker(); }
 document.getElementById('pickClose').addEventListener('click', closePicker);
 document.getElementById('picker').addEventListener('click', e=>{ if(e.target.id==='picker') closePicker(); });
 
-// ===== チップ描画 =====
+// ===== チップ =====
 function chip(e, opts={}){
   const cls='chip'+(opts.sel?' sel':'')+(opts.pick?' pick':'');
   const ld=opts.lead?`<span class="ld">先発</span>`:'';
   const fm=e.f?`<span class="fm">${e.f}</span>`:'';
   const rm=opts.rmKey!==undefined?`<button class="rm" data-rm="${opts.rmKey}">×</button>`:'';
-  return `<div class="${cls}" ${opts.tapKey!==undefined?`data-tap="${opts.tapKey}"`:''}>${ld}${rm}<img class="ico" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FB}" alt="${nameOf(e)}">${fm}<span class="nm">${jaName(e.d)}</span></div>`;
+  let mtog='';
+  if(opts.megaAvail && opts.sel){ mtog=`<button class="mtog${e.m?'':' off'}" data-mtog="${opts.tapKey}">${e.m||'メガ'}</button>`; }
+  return `<div class="${cls}" ${opts.tapKey!==undefined?`data-tap="${opts.tapKey}"`:''}>${ld}${rm}${mtog}<img class="ico" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="this.onerror=null;this.src=this.dataset.fb" alt="${nameOf(e)}"><span class="nm">${jaName(e.d)}</span></div>`;
 }
-function inSel(arr,e){ return arr.findIndex(x=>keyOf(x)===keyOf(e)); }
-function toggleSel(arr,e){ const i=inSel(arr,e); if(i>-1)arr.splice(i,1); else if(arr.length<4)arr.push(e); }
+function findSel(arr,e){ return arr.findIndex(x=>selKey(x)===selKey(e)); }
+function toggleSel(arr,cand){ const i=findSel(arr,cand); if(i>-1)arr.splice(i,1); else if(arr.length<4)arr.push({d:cand.d,f:cand.f,s:cand.s,m:null}); }
+function cycleMega(arr,cand){ const i=findSel(arr,cand); if(i<0)return; const megs=MEGAS[cand.d]; if(!megs)return;
+  const states=[null,...megs.map(m=>m[0])]; const cur=states.indexOf(arr[i].m); const nx=states[(cur+1)%states.length];
+  arr[i].m=nx; arr[i].s = nx? megs.find(m=>m[0]===nx)[1] : cand.s; }
 
 // ===== 記録フォーム =====
 function renderTeamSel(){
@@ -317,60 +335,78 @@ function renderTeamSel(){
   if(!teams.length){ sel.innerHTML='<option value="">（構築未登録：データタブで追加）</option>'; return; }
   sel.innerHTML=teams.map(t=>`<option value="${t.id}" ${t.id===activeId?'selected':''}>${esc(t.name)}（${t.roster.length}体）</option>`).join('');
 }
-document.getElementById('teamSel').addEventListener('change', e=>{ activeId=e.target.value; save(LS.active,activeId); draft.mySel=[]; renderRec(); });
+document.getElementById('teamSel').addEventListener('change', e=>{ activeId=e.target.value; save(LS.active,activeId); if(!editingId)draft.mySel=[]; renderRec(); });
+
+function myCandidates(){ const t=activeTeam(); if(t&&t.roster.length) return t.roster; return draft.mySel; }
 
 function renderRec(){
+  document.getElementById('editBanner').style.display = editingId? 'flex':'none';
+  document.getElementById('saveBtn').textContent = editingId? 'この内容で更新' : 'この対戦を保存';
   renderTeamSel();
   const op=document.getElementById('oppSlots');
   op.innerHTML = draft.opp.map((e,i)=>chip(e,{rmKey:'opp:'+i})).join('') + (draft.opp.length<6?`<button class="btn add" data-add="opp">＋</button>`:'');
+  // 相手選出
   const os=document.getElementById('oppSelSlots');
-  os.innerHTML = draft.opp.length? draft.opp.map((e,i)=>chip(e,{tapKey:'opp:'+i,sel:inSel(draft.oppSel,e)>-1,lead:inSel(draft.oppSel,e)>-1&&inSel(draft.oppSel,e)<2})).join('') : '<p class="hint">先に相手6体を入力</p>';
+  os.innerHTML = draft.opp.length? draft.opp.map((cand,i)=>{ const si=findSel(draft.oppSel,cand); const sel=si>-1; const disp=sel?draft.oppSel[si]:cand;
+    return chip(disp,{tapKey:'opp:'+i,sel,lead:sel&&si<2,megaAvail:!!MEGAS[cand.d]}); }).join('') : '<p class="hint">先に相手6体を入力</p>';
   renderSetMemos();
-  const t=activeTeam();
+  // 自分選出
+  const cands=myCandidates();
   const ms=document.getElementById('mySelSlots');
-  ms.innerHTML = (t&&t.roster.length)? t.roster.map((e,i)=>chip(e,{tapKey:'my:'+i,sel:inSel(draft.mySel,e)>-1,lead:inSel(draft.mySel,e)>-1&&inSel(draft.mySel,e)<2})).join('') : '<p class="hint">構築を選ぶと選出をタップ入力できます</p>';
+  ms.innerHTML = cands.length? cands.map((cand,i)=>{ const si=findSel(draft.mySel,cand); const sel=si>-1; const disp=sel?draft.mySel[si]:cand;
+    return chip(disp,{tapKey:'my:'+i,sel,lead:sel&&si<2,megaAvail:!!MEGAS[cand.d]}); }).join('') : '<p class="hint">構築を選ぶと選出をタップ入力できます</p>';
   document.getElementById('bWin').classList.toggle('on',draft.result==='win');
   document.getElementById('bLoss').classList.toggle('on',draft.result==='loss');
 }
 function renderSetMemos(){
   const c=document.getElementById('setMemos');
   if(!draft.oppSel.length){ c.innerHTML=''; return; }
-  c.innerHTML='<div class="seclbl">相手の型メモ（任意）</div>'+draft.oppSel.map(e=>{
-    const k=keyOf(e); const s=draft.sets[k]||{};
-    return `<div class="setmemo"><img src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FB}" alt="${nameOf(e)}">
-      <input data-set="${k}" data-fld="item" placeholder="持ち物" value="${esc(s.item||'')}" style="flex:1">
-      <input data-set="${k}" data-fld="tera" placeholder="テラス" value="${esc(s.tera||'')}" style="width:90px"></div>`;
+  c.innerHTML='<div class="seclbl">相手の型メモ（持ち物・任意）</div>'+draft.oppSel.map(e=>{
+    const k=selKey(e); const s=draft.sets[k]||{};
+    const optsHtml='<option value="">持ち物を選択</option>'+ITEMS.map(it=>`<option ${s.item===it?'selected':''}>${it}</option>`).join('');
+    const other = s.item==='その他'? `<input data-other="${k}" placeholder="自由入力" value="${esc(s.other||'')}" style="width:110px">`:'';
+    return `<div class="setmemo"><img src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="this.onerror=null;this.src=this.dataset.fb" alt="${nameOf(e)}">
+      <span class="nmw">${nameOf(e)}</span><select data-set="${k}">${optsHtml}</select>${other}</div>`;
   }).join('');
 }
-document.getElementById('setMemos').addEventListener('input', e=>{
-  const k=e.target.dataset.set, f=e.target.dataset.fld; if(!k) return;
-  draft.sets[k]=draft.sets[k]||{}; draft.sets[k][f]=e.target.value;
-});
+document.getElementById('setMemos').addEventListener('change', e=>{ const k=e.target.dataset.set; if(k){ draft.sets[k]=draft.sets[k]||{}; draft.sets[k].item=e.target.value; renderSetMemos(); } });
+document.getElementById('setMemos').addEventListener('input', e=>{ const k=e.target.dataset.other; if(k){ draft.sets[k]=draft.sets[k]||{}; draft.sets[k].other=e.target.value; } });
+
 document.getElementById('oppSlots').addEventListener('click', e=>{
-  if(e.target.dataset.add==='opp'){ openPicker('相手の構築に追加', en=>{ if(draft.opp.length<6 && inSel(draft.opp,en)<0){draft.opp.push(en);renderRec()} }); }
-  const rm=e.target.dataset.rm; if(rm){ const i=+rm.split(':')[1]; const e2=draft.opp[i]; draft.opp.splice(i,1); const si=inSel(draft.oppSel,e2); if(si>-1)draft.oppSel.splice(si,1); renderRec(); }
+  if(e.target.dataset.add==='opp'){ openPicker('相手の構築に追加', en=>{ if(draft.opp.length<6 && findSel(draft.opp,en)<0){draft.opp.push(en);renderRec()} }); }
+  const rm=e.target.dataset.rm; if(rm){ const i=+rm.split(':')[1]; const e2=draft.opp[i]; draft.opp.splice(i,1); const si=findSel(draft.oppSel,e2); if(si>-1)draft.oppSel.splice(si,1); renderRec(); }
 });
-document.getElementById('oppSelSlots').addEventListener('click', e=>{ const c=e.target.closest('[data-tap]'); if(c){ const i=+c.dataset.tap.split(':')[1]; toggleSel(draft.oppSel,draft.opp[i]); renderRec(); } });
-document.getElementById('mySelSlots').addEventListener('click', e=>{ const c=e.target.closest('[data-tap]'); if(c){ const t=activeTeam(); if(t){ const i=+c.dataset.tap.split(':')[1]; toggleSel(draft.mySel,t.roster[i]); renderRec(); } } });
+document.getElementById('oppSelSlots').addEventListener('click', e=>{
+  const mt=e.target.closest('[data-mtog]'); if(mt){ e.stopPropagation(); const i=+mt.dataset.mtog.split(':')[1]; cycleMega(draft.oppSel,draft.opp[i]); renderRec(); return; }
+  const c=e.target.closest('[data-tap]'); if(c){ const i=+c.dataset.tap.split(':')[1]; toggleSel(draft.oppSel,draft.opp[i]); renderRec(); }
+});
+document.getElementById('mySelSlots').addEventListener('click', e=>{
+  const cands=myCandidates();
+  const mt=e.target.closest('[data-mtog]'); if(mt){ e.stopPropagation(); const i=+mt.dataset.mtog.split(':')[1]; cycleMega(draft.mySel,cands[i]); renderRec(); return; }
+  const c=e.target.closest('[data-tap]'); if(c){ const i=+c.dataset.tap.split(':')[1]; toggleSel(draft.mySel,cands[i]); renderRec(); }
+});
 document.getElementById('bWin').addEventListener('click',()=>{draft.result='win';renderRec()});
 document.getElementById('bLoss').addEventListener('click',()=>{draft.result='loss';renderRec()});
+document.getElementById('cancelEdit').addEventListener('click',()=>{ resetDraft(); go('log'); });
+function resetDraft(){ editingId=null; draft={opp:[],oppSel:[],mySel:[],sets:{},result:null}; document.getElementById('notes').value=''; renderRec(); }
 
 document.getElementById('saveBtn').addEventListener('click', ()=>{
   if(!draft.opp.length){ alert('相手の構築を入力してください'); return; }
   if(!draft.result){ alert('勝敗を選んでください'); return; }
   const t=activeTeam();
-  const cleanSets={}; draft.oppSel.forEach(e=>{ const k=keyOf(e),s=draft.sets[k]; if(s&&(s.item||s.tera))cleanSets[k]={item:s.item||'',tera:s.tera||''}; });
-  logs.unshift({ id:Date.now(), date:new Date().toISOString().slice(0,10),
-    teamId:t?t.id:null, teamName:t?t.name:'',
-    opp:[...draft.opp], oppSel:[...draft.oppSel], mySel:[...draft.mySel], sets:cleanSets,
-    result:draft.result, notes:document.getElementById('notes').value.trim() });
-  save(LS.logs,logs);
-  draft={opp:[],oppSel:[],mySel:[],sets:{},result:null};
-  document.getElementById('notes').value='';
-  renderRec(); renderLog(); refreshAnaFilter(); renderAna(); go('log');
+  const cleanSets={}; draft.oppSel.forEach(e=>{ const k=selKey(e),s=draft.sets[k]; if(s&&s.item){ cleanSets[k]={item:s.item, other:s.item==='その他'?(s.other||''):''}; } });
+  const payload={ opp:clone(draft.opp), oppSel:clone(draft.oppSel), mySel:clone(draft.mySel), sets:cleanSets,
+    result:draft.result, notes:document.getElementById('notes').value.trim() };
+  if(editingId){
+    const idx=logs.findIndex(m=>m.id===editingId);
+    if(idx>-1){ logs[idx]=Object.assign(logs[idx], payload); }   // id/date/team維持
+  } else {
+    logs.unshift(Object.assign({ id:Date.now(), date:new Date().toISOString().slice(0,10), teamId:t?t.id:null, teamName:t?t.name:'' }, payload));
+  }
+  save(LS.logs,logs); resetDraft(); renderLog(); refreshAnaFilter(); renderAna(); go('log');
 });
 
-// ===== 戦績 =====
+// ===== 戦績（編集対応）=====
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 function renderLog(){
   const w=logs.filter(m=>m.result==='win').length;
@@ -382,18 +418,31 @@ function renderLog(){
   list.innerHTML=logs.map(m=>`<div class="match">
     <span class="res ${m.result}">${m.result==='win'?'勝':'負'}</span>
     <div style="flex:1;min-width:0">
-      ${m.teamName?`<div class="hint" style="margin:0 0 2px">vs ${(m.oppSel&&m.oppSel.length?'選出':'構築')} ・ 自:${esc(m.teamName)}</div>`:''}
-      <div style="display:flex;gap:2px;flex-wrap:wrap">${(m.oppSel&&m.oppSel.length?m.oppSel:m.opp).map(e=>`<img class="mini" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FB}" alt="${nameOf(e)}">`).join('')}</div>
+      <div class="hint" style="margin:0 0 2px">${esc(m.date||'')}${m.teamName?' ・ 自:'+esc(m.teamName):''}</div>
+      <div style="display:flex;gap:2px;flex-wrap:wrap">${(m.oppSel&&m.oppSel.length?m.oppSel:m.opp).map(e=>`<img class="mini" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="this.onerror=null;this.src=this.dataset.fb" alt="${nameOf(e)}">`).join('')}</div>
       ${m.notes?`<div class="hint" style="margin-top:3px">${esc(m.notes)}</div>`:''}
     </div>
-    <button class="btn sm" data-del="${m.id}">×</button></div>`).join('');
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <button class="btn sm" data-edit="${m.id}">編集</button>
+      <button class="btn sm" data-del="${m.id}">×</button>
+    </div></div>`).join('');
 }
-document.getElementById('logList').addEventListener('click', e=>{ const id=e.target.dataset.del; if(id&&confirm('この記録を削除しますか？')){ logs=logs.filter(m=>m.id!=id); save(LS.logs,logs); renderLog(); renderAna(); } });
+document.getElementById('logList').addEventListener('click', e=>{
+  const del=e.target.dataset.del; if(del&&confirm('この記録を削除しますか？')){ logs=logs.filter(m=>m.id!=del); save(LS.logs,logs); renderLog(); renderAna(); return; }
+  const ed=e.target.dataset.edit; if(ed){ loadForEdit(+ed); }
+});
+function loadForEdit(id){
+  const m=logs.find(x=>x.id===id); if(!m)return;
+  editingId=id;
+  if(m.teamId && teams.some(t=>t.id===m.teamId)) activeId=m.teamId;
+  draft={ opp:clone(m.opp||[]), oppSel:clone(m.oppSel||[]), mySel:clone(m.mySel||[]), sets:clone(m.sets||{}), result:m.result };
+  document.getElementById('notes').value=m.notes||'';
+  renderRec(); go('rec');
+}
 
-// ===== 分析（構築フィルタ対応）=====
+// ===== 分析 =====
 function refreshAnaFilter(){
-  const sel=document.getElementById('anaFilter');
-  const cur=sel.value;
+  const sel=document.getElementById('anaFilter'); const cur=sel.value;
   sel.innerHTML='<option value="">全構築</option>'+teams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('');
   if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
 }
@@ -401,61 +450,59 @@ document.getElementById('anaFilter').addEventListener('change', renderAna);
 function filteredLogs(){ const f=document.getElementById('anaFilter').value; return f? logs.filter(m=>m.teamId===f) : logs; }
 
 function renderAna(){
-  const L=filteredLogs();
-  const w=L.filter(m=>m.result==='win').length;
+  const L=filteredLogs(); const w=L.filter(m=>m.result==='win').length;
   document.getElementById('aTotal').textContent=L.length;
   document.getElementById('aWL').textContent=w+'-'+(L.length-w);
   document.getElementById('aRate').textContent=L.length?Math.round(w/L.length*100)+'%':'—';
 
-  // 相手ポケモン集計（選出ベース・フォルム別キー）
   const opp={};
   L.forEach(m=>{ const list=m.oppSel&&m.oppSel.length?m.oppSel:m.opp; const seen=new Set();
-    list.forEach((e,idx)=>{ const k=keyOf(e); if(seen.has(k))return; seen.add(k);
-      const o=opp[k]=opp[k]||{e,n:0,w:0,lead:0}; o.n++; if(m.result==='win')o.w++; if(idx<2&&m.oppSel&&m.oppSel.length)o.lead++; }); });
+    list.forEach((e,idx)=>{ const k=selKey(e); if(seen.has(k))return; seen.add(k);
+      const o=opp[k]=opp[k]||{e,n:0,w:0,lead:0,mega:0}; o.n++; if(m.result==='win')o.w++;
+      if(idx<2&&m.oppSel&&m.oppSel.length)o.lead++; if(e.m)o.mega++; }); });
   const arr=Object.values(opp);
 
   const weak=arr.filter(x=>x.n>=2).sort((a,b)=>a.w/a.n-b.w/b.n).slice(0,8);
   document.getElementById('weakList').innerHTML = weak.length? weak.map(x=>statRow(x.e,x.w/x.n,`${Math.round(x.w/x.n*100)}% (${x.w}/${x.n})`,'loss')).join('') : '<p class="empty">2戦以上のデータが必要です</p>';
 
   const face=arr.slice().sort((a,b)=>b.n-a.n).slice(0,10); const maxN=face.length?face[0].n:1;
-  document.getElementById('faceList').innerHTML = face.length? face.map(x=>statRow(x.e,x.n/maxN,`${x.n}回 / 先発${x.n?Math.round(x.lead/x.n*100):0}%`,'accent')).join('') : '<p class="empty">データ不足</p>';
+  document.getElementById('faceList').innerHTML = face.length? face.map(x=>statRow(x.e,x.n/maxN,`${x.n}回 / 先発${Math.round(x.lead/x.n*100)}%`,'accent')).join('') : '<p class="empty">データ不足</p>';
 
-  // 型傾向（持ち物・テラスの頻度）
+  // 型傾向（持ち物 + メガ頻度）
   const sets={};
-  L.forEach(m=>{ if(!m.sets)return; Object.entries(m.sets).forEach(([k,v])=>{ const ref=(m.oppSel||m.opp||[]).find(e=>keyOf(e)===k); if(!ref)return;
-    const o=sets[k]=sets[k]||{e:ref,item:{},tera:{}}; if(v.item)o.item[v.item]=(o.item[v.item]||0)+1; if(v.tera)o.tera[v.tera]=(o.tera[v.tera]||0)+1; }); });
-  const setArr=Object.values(sets).filter(o=>Object.keys(o.item).length||Object.keys(o.tera).length);
-  document.getElementById('setList').innerHTML = setArr.length? setArr.map(o=>{
-    const top=obj=>Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,n])=>`<span class="tag">${esc(k)}×${n}</span>`).join('');
-    const items=top(o.item), teras=top(o.tera);
-    return `<div class="stat"><img class="mini" src="${iconOf(o.e)}" data-fb="${SD(baseSid(o.e.d))}" onerror="${FB}" alt="${nameOf(o.e)}">
-      <div style="flex:1"><div style="font-size:13px">${nameOf(o.e)}</div><div class="tags">${items}${teras?' '+teras:''}</div></div></div>`;
+  L.forEach(m=>{ const sel=m.oppSel||[]; sel.forEach(e=>{ const k=selKey(e); const o=sets[k]=sets[k]||{e,item:{},mega:0,n:0}; o.n++; if(e.m)o.mega++;
+      const sm=m.sets&&m.sets[k]; if(sm&&sm.item){ const it=sm.item==='その他'?(sm.other||'その他'):sm.item; o.item[it]=(o.item[it]||0)+1; } }); });
+  const setArr=Object.values(sets).filter(o=>Object.keys(o.item).length||o.mega);
+  document.getElementById('setList').innerHTML = setArr.length? setArr.sort((a,b)=>b.n-a.n).map(o=>{
+    const items=Object.entries(o.item).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,n])=>`<span class="tag">${esc(k)}×${n}</span>`).join('');
+    const mega=o.mega?`<span class="tag">メガ×${o.mega}</span>`:'';
+    return `<div class="stat"><img class="mini" src="${iconOf(o.e)}" data-fb="${SD(baseSid(o.e.d))}" onerror="this.onerror=null;this.src=this.dataset.fb" alt="${nameOf(o.e)}">
+      <div style="flex:1"><div style="font-size:13px">${nameOf(o.e)}</div><div class="tags">${items}${mega}</div></div></div>`;
   }).join('') : '<p class="empty">記録に型メモがありません</p>';
 
-  // 自分の選出率・勝率（フィルタ構築 or 全構築の選出集計）
   const fid=document.getElementById('anaFilter').value;
   const myT = fid? teams.find(t=>t.id===fid) : activeTeam();
   if(myT && myT.roster.length && L.length){
-    const my={}; myT.roster.forEach(e=>my[keyOf(e)]={e,n:0,w:0});
-    L.forEach(m=>m.mySel.forEach(e=>{ const k=keyOf(e); if(my[k]){my[k].n++; if(m.result==='win')my[k].w++;} }));
-    document.getElementById('myList').innerHTML = myT.roster.map(e=>{ const x=my[keyOf(e)]; return statRow(e, x.n/L.length, `選出${Math.round(x.n/L.length*100)}% / 勝${x.n?Math.round(x.w/x.n*100):0}%`,'win'); }).join('');
+    const my={}; myT.roster.forEach(e=>my[selKey(e)]={e,n:0,w:0});
+    L.forEach(m=>m.mySel.forEach(e=>{ const k=selKey(e); if(my[k]){my[k].n++; if(m.result==='win')my[k].w++;} }));
+    document.getElementById('myList').innerHTML = myT.roster.map(e=>{ const x=my[selKey(e)]; return statRow(e, x.n/L.length, `選出${Math.round(x.n/L.length*100)}% / 勝${x.n?Math.round(x.w/x.n*100):0}%`,'win'); }).join('');
   } else { document.getElementById('myList').innerHTML='<p class="empty">構築フィルタを選ぶ（または構築を登録する）と集計されます</p>'; }
 }
 function statRow(e,frac,label,color){
   const col=color==='loss'?'var(--loss)':color==='win'?'var(--win)':'var(--accent)';
-  return `<div class="stat"><img class="mini" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FB}" alt="${nameOf(e)}">
-    <span style="font-size:13px;width:80px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${nameOf(e)}</span>
+  return `<div class="stat"><img class="mini" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="this.onerror=null;this.src=this.dataset.fb" alt="${nameOf(e)}">
+    <span style="font-size:13px;width:84px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${nameOf(e)}</span>
     <div class="bar"><i style="width:${Math.round(frac*100)}%;background:${col}"></i></div>
     <span class="pct">${label}</span></div>`;
 }
 
-// ===== データ（構築管理）=====
+// ===== データ =====
 function renderTeams(){
   const c=document.getElementById('teamList');
   if(!teams.length){ c.innerHTML='<p class="empty">構築が未登録です。「＋構築を追加」から作成してください</p>'; return; }
   c.innerHTML=teams.map(t=>`<div style="padding:10px 0;border-bottom:1px solid var(--line)">
     <div class="row" style="justify-content:space-between">
-      <input data-tname="${t.id}" value="${esc(t.name)}" style="flex:1;max-width:60%">
+      <input data-tname="${t.id}" value="${esc(t.name)}" style="flex:1;max-width:58%">
       <div class="row"><button class="btn sm" data-tact="${t.id}">${t.id===activeId?'使用中':'使う'}</button><button class="btn sm" data-tdel="${t.id}">削除</button></div>
     </div>
     <div class="slots" style="margin-top:8px">${t.roster.map((e,i)=>chip(e,{rmKey:'tm:'+t.id+':'+i})).join('')}${t.roster.length<6?`<button class="btn add" data-tadd="${t.id}">＋</button>`:''}</div>
@@ -466,7 +513,7 @@ document.getElementById('addTeam').addEventListener('click', ()=>{
   save(LS.teams,teams); save(LS.active,activeId); renderTeams(); refreshAnaFilter(); renderRec();
 });
 document.getElementById('teamList').addEventListener('click', e=>{
-  const add=e.target.dataset.tadd; if(add){ const t=teams.find(x=>x.id===add); openPicker('構築に追加', en=>{ if(t.roster.length<6&&inSel(t.roster,en)<0){t.roster.push(en);save(LS.teams,teams);renderTeams();renderRec()} }); return; }
+  const add=e.target.dataset.tadd; if(add){ const t=teams.find(x=>x.id===add); openPicker('構築に追加', en=>{ if(t.roster.length<6&&findSel(t.roster,en)<0){t.roster.push(en);save(LS.teams,teams);renderTeams();renderRec()} }); return; }
   const rm=e.target.dataset.rm; if(rm&&rm.startsWith('tm:')){ const [,tid,idx]=rm.split(':'); const t=teams.find(x=>x.id===tid); t.roster.splice(+idx,1); save(LS.teams,teams); renderTeams(); renderRec(); return; }
   const act=e.target.dataset.tact; if(act){ activeId=act; save(LS.active,activeId); renderTeams(); renderRec(); return; }
   const del=e.target.dataset.tdel; if(del&&confirm('この構築を削除しますか？')){ teams=teams.filter(x=>x.id!==del); if(activeId===del)activeId=teams[0]?teams[0].id:null; save(LS.teams,teams); save(LS.active,activeId); renderTeams(); refreshAnaFilter(); renderRec(); }
@@ -494,8 +541,6 @@ document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()
 // 初期化
 if(!activeId && teams[0]) activeId=teams[0].id;
 renderRec(); renderTeams(); refreshAnaFilter();
-
-// PWA
 if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
 </script>
 </body>
