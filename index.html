@@ -242,7 +242,7 @@
       <textarea id="ioArea" style="margin-top:10px" placeholder="ここに貼り付けて「読み込み」で復元"></textarea>
     </div>
     <div class="card"><div class="lbl">レギュレーション表示名</div><input id="regName" placeholder="Reg. M-B" /></div>
-    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v7（デザイン一新・ジェスチャー/ハプティクス対応）。データは端末内(localStorage)に保存されます。</p></div>
+    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v9（メガ切替で持ち物を自動でメガストーンに）。データは端末内(localStorage)に保存されます。</p></div>
   </section>
 </main>
 
@@ -490,7 +490,12 @@ function findSel(arr,e){ return arr.findIndex(x=>selKey(x)===selKey(e)); }
 function toggleSel(arr,cand){ const i=findSel(arr,cand); if(i>-1)arr.splice(i,1); else if(arr.length<4)arr.push({d:cand.d,f:cand.f,s:cand.s,m:null}); hap(9); }
 function cycleMega(arr,cand){ const i=findSel(arr,cand); if(i<0)return; const megs=MEGAS[cand.d]; if(!megs)return;
   const states=[null,...megs.map(m=>m[0])]; const nx=states[(states.indexOf(arr[i].m)+1)%states.length];
-  arr[i].m=nx; arr[i].s = nx? megs.find(m=>m[0]===nx)[1] : cand.s; hap(12); }
+  arr[i].m=nx; arr[i].s = nx? megs.find(m=>m[0]===nx)[1] : cand.s;
+  // 相手選出のメガ切替は持ち物を自動連動（ON→メガストーン / OFF→メガストーンならクリア）
+  if(arr===draft.oppSel){ const k=selKey(arr[i]);
+    if(nx){ draft.sets[k]=draft.sets[k]||{}; draft.sets[k].item='メガストーン'; }
+    else if(draft.sets[k] && draft.sets[k].item==='メガストーン') delete draft.sets[k].item; }
+  hap(12); }
 
 // ===== 記録フォーム =====
 function renderTeamSel(){
