@@ -19,14 +19,15 @@
   header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:max(10px,env(safe-area-inset-top)) 16px 10px}
   h1{font-size:18px;font-weight:600;margin:0}
   .reg{font-size:12px;color:var(--sub);margin-top:1px}
-  main{max-width:680px;margin:0 auto;padding:14px 12px calc(var(--nav) + env(safe-area-inset-bottom) + 84px)}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
-  .lbl{font-size:13px;color:var(--sub);font-weight:600;margin:0 0 10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  main{max-width:680px;margin:0 auto;padding:10px 12px calc(var(--nav) + env(safe-area-inset-bottom) + 84px)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+  .lbl{font-size:12px;color:var(--sub);font-weight:600;margin:0 0 7px;display:flex;justify-content:space-between;align-items:center;gap:8px}
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .slots{display:flex;gap:10px;flex-wrap:wrap;min-height:62px}
-  .ico{width:48px;height:48px;object-fit:contain}
-  .chip{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--card2);padding:3px;display:flex;flex-direction:column;align-items:center;width:62px}
-  .chip .nm{font-size:9px;color:var(--sub);line-height:1.1;text-align:center;max-width:58px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;min-height:64px;justify-items:center}
+  .slots .hint{grid-column:1/-1;justify-self:start;margin:4px 0}
+  .ico{width:46px;height:46px;object-fit:contain}
+  .chip{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--card2);padding:3px;display:flex;flex-direction:column;align-items:center;width:100%;max-width:112px}
+  .chip .nm{font-size:9px;color:var(--sub);line-height:1.1;text-align:center;max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
   .chip .rm{position:absolute;top:-9px;right:-9px;width:24px;height:24px;border-radius:50%;background:var(--loss);color:#fff;border:none;font-size:14px;line-height:1;cursor:pointer}
   .chip.sel{border-color:var(--accent);background:var(--accent-bg)}
   .chip .ld{position:absolute;top:-9px;left:-9px;background:var(--accent);color:#fff;font-size:9px;border-radius:6px;padding:1px 4px}
@@ -37,11 +38,11 @@
   .btn{border:1px solid var(--line);background:var(--card2);color:var(--txt);border-radius:10px;padding:11px 14px;font-size:15px;cursor:pointer}
   .btn:active{transform:scale(.97)}
   .btn.sm{padding:8px 12px;font-size:13px}
-  .btn.add{border-style:dashed;color:var(--accent);width:62px;height:62px;font-size:24px;padding:0;background:none}
-  .btn.primary{background:var(--accent);color:#0a1722;border-color:var(--accent);width:100%;font-weight:700;padding:15px;font-size:16px}
+  .btn.add{border-style:dashed;color:var(--accent);width:100%;max-width:112px;height:64px;font-size:24px;padding:0;background:none}
+  .btn.primary{background:var(--accent);color:#0a1722;border-color:var(--accent);flex:1.4;font-weight:700;padding:13px 8px;font-size:15px}
   .btn.ghost{background:none}
-  .btn.win{flex:1;border-color:var(--win);padding:13px} .btn.win.on{background:var(--win-bg);color:var(--win);font-weight:700}
-  .btn.loss{flex:1;border-color:var(--loss);padding:13px} .btn.loss.on{background:var(--loss-bg);color:var(--loss);font-weight:700}
+  .btn.win{flex:1;border-color:var(--win);padding:13px 8px} .btn.win.on{background:var(--win-bg);color:var(--win);font-weight:700}
+  .btn.loss{flex:1;border-color:var(--loss);padding:13px 8px} .btn.loss.on{background:var(--loss-bg);color:var(--loss);font-weight:700}
   input,textarea,select{font-family:inherit;font-size:16px;width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card2);color:var(--txt)}
   textarea{resize:vertical;min-height:64px}
   .setmemo{display:flex;align-items:center;gap:10px;margin-top:10px}
@@ -56,7 +57,7 @@
   nav .ni{font-size:20px;line-height:1}
   #saveBar{position:fixed;left:0;right:0;bottom:calc(var(--nav) + env(safe-area-inset-bottom));z-index:6;background:linear-gradient(to top,var(--bg) 70%,transparent);padding:10px 12px 12px;display:none}
   #saveBar.show{display:block}
-  #saveBar .inner{max-width:680px;margin:0 auto}
+  #saveBar .inner{max-width:680px;margin:0 auto;display:flex;gap:8px}
   .view{display:none} .view.on{display:block}
   .empty{color:var(--muted);text-align:center;padding:26px 10px;font-size:14px}
   .match{display:flex;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
@@ -117,17 +118,13 @@
       <div class="slots" id="oppSlots"></div>
     </div>
     <div class="card">
-      <div class="lbl">相手の選出（最大4・先頭2=先発 / メガはタップ切替）</div>
-      <div class="slots" id="oppSelSlots"></div>
-      <div id="setMemos"></div>
-    </div>
-    <div class="card">
       <div class="lbl">自分の選出（最大4・先頭2=先発 / メガはタップ切替）</div>
       <div class="slots" id="mySelSlots"></div>
     </div>
     <div class="card">
-      <div class="lbl">結果</div>
-      <div class="row"><button class="btn win" id="bWin">勝ち</button><button class="btn loss" id="bLoss">負け</button></div>
+      <div class="lbl">相手の選出（最大4・先頭2=先発 / メガはタップ切替）</div>
+      <div class="slots" id="oppSelSlots"></div>
+      <div id="setMemos"></div>
     </div>
     <div class="card">
       <div class="lbl">メモ（負け筋・要所の分岐など）</div>
@@ -179,7 +176,7 @@
   </section>
 </main>
 
-<div id="saveBar"><div class="inner"><button class="btn primary" id="saveBtn">この対戦を保存</button></div></div>
+<div id="saveBar"><div class="inner"><button class="btn win" id="bWin">勝ち</button><button class="btn loss" id="bLoss">負け</button><button class="btn primary" id="saveBtn">保存</button></div></div>
 
 <nav>
   <button class="on" data-v="rec"><span class="ni">＋</span>記録</button>
@@ -388,7 +385,7 @@ function myCandidates(){ const t=activeTeam(); return (t&&t.roster.length)? t.ro
 
 function renderRec(){
   $('editBanner').style.display = editingId?'flex':'none';
-  $('saveBtn').textContent = editingId?'この内容で更新':'この対戦を保存';
+  $('saveBtn').textContent = editingId?'更新':'保存';
   renderTeamSel();
   $('oppSlots').innerHTML = draft.opp.map((e,i)=>chip(e,{rmKey:'opp:'+i})).join('') + (draft.opp.length<6?`<button class="btn add" id="addOpp">＋</button>`:'');
   const os=$('oppSelSlots');
