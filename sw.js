@@ -1,5 +1,5 @@
 // VGC 戦績トラッカー Service Worker — アプリ本体＋スプライトをキャッシュして完全オフライン化
-const SHELL = 'vgc-shell-v6';
+const SHELL = 'vgc-shell-v7';
 const SPRITES = 'vgc-sprites-v1';
 const SHELL_ASSETS = [
   './', './index.html', './pokedex-names.js', './manifest.json',
@@ -20,6 +20,8 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+  // β版(/beta/)はネットワーク優先（試作の更新を即反映）
+  if (url.origin === self.location.origin && url.pathname.includes('/beta/')) return;
   // Showdownスプライト: cache-first（初回オンライン取得→以後オフラインでも表示）
   if (url.hostname.includes('pokemonshowdown.com')) {
     e.respondWith(
