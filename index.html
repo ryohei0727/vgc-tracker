@@ -284,8 +284,9 @@ const MEGAS = {
   448:[['メガ','lucario-mega']],460:[['メガ','abomasnow-mega']],475:[['メガ','gallade-mega']],531:[['メガ','audino-mega']],
   655:[['メガ','delphox-mega']],668:[['メガ','pyroar-mega']],670:[['メガ','floette-eternal']],719:[['メガ','diancie-mega']]
 };
-const TOP20 = [[445],[902],[1013],[727],[983],[547],[670,'永遠の花','floette-eternal'],[903],[6],[279],
-  [376],[861],[1018],[260],[398],[1000],[981],[700],[655],[303]].map(a=>mkEntry(a[0],a[1],a[2]));
+const TOP30 = [[445],[902],[1013],[727],[983],[547],[670,'永遠の花','floette-eternal'],[903],[6],[279],
+  [376],[861],[1018],[260],[398],[1000],[981],[700],[655],[303],
+  [142],[26],[3],[324],[635],[925],[302],[478],[38,'アローラ','ninetales-alola'],[350]].map(a=>mkEntry(a[0],a[1],a[2]));
 
 // ===== 持ち物（アイコン+集計）=====
 const IIMG='https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/';
@@ -327,7 +328,7 @@ let pickState=null; // {list,max,onChange}
 const $=id=>document.getElementById(id);
 function openPicker(title, list, max, onChange){
   pickState={list,max,onChange}; $('pickTitle').textContent=title;
-  $('pickSearch').value=''; renderPick(''); $('picker').classList.add('on'); setTimeout(()=>$('pickSearch').focus(),50);
+  $('pickSearch').value=''; renderPick(''); $('picker').classList.add('on'); // キーボードはユーザーが検索欄をタップしたときのみ表示
 }
 function closePicker(){ $('picker').classList.remove('on'); pickState=null; }
 function added(d){ return pickState && pickState.list.some(x=>x.d===d); }
@@ -339,7 +340,7 @@ function renderPick(q){
   q=q.trim().toLowerCase(); const body=$('pickBody'); let html='';
   $('pickDone').textContent=`完了 (${pickState.list.length}/${pickState.max})`;
   if(!q){
-    html += '<div class="seclbl">使用率トップ20</div><div class="grid">'+TOP20.map(giHTML).join('')+'</div>';
+    html += '<div class="seclbl">使用率トップ30</div><div class="grid">'+TOP30.map(giHTML).join('')+'</div>';
     html += '<div class="seclbl">全ポケモン</div><div class="grid">'+INDEX.slice(0,40).map(p=>giHTML(mkEntry(p.d))).join('')+'</div>';
   } else {
     let res = /^\d+$/.test(q) ? INDEX.filter(p=>String(p.d).startsWith(q)) : INDEX.filter(p=>p.j.includes(q)||p.el.includes(q));
@@ -374,7 +375,7 @@ $('picker').addEventListener('click', e=>{ if(e.target.id==='picker') closePicke
 
 // ===== アイテムピッカー =====
 let itemKey=null;
-function openItemPicker(k){ itemKey=k; $('itemSearch').value=''; renderItems(''); $('itemPicker').classList.add('on'); setTimeout(()=>$('itemSearch').focus(),50); }
+function openItemPicker(k){ itemKey=k; $('itemSearch').value=''; renderItems(''); $('itemPicker').classList.add('on'); }
 function closeItemPicker(){ $('itemPicker').classList.remove('on'); itemKey=null; }
 function itiHTML(it){ const ic=itemIcon(it.n); return `<div class="iti" data-iname="${it.n}">${ic?`<img src="${ic}" onerror="this.style.visibility='hidden'">`:'<span class="ph"></span>'}<span>${it.n}</span></div>`; }
 function renderItems(q){
