@@ -130,6 +130,18 @@
   .pct{font-size:12px;font-variant-numeric:tabular-nums;width:104px;text-align:right;color:var(--sub)}
   .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px}
   .tag{font-size:11px;background:var(--card2);border:1px solid var(--line);border-radius:99px;padding:2px 8px;color:var(--sub)}
+  .stat[data-flt]{cursor:pointer;margin:4px -6px;padding:5px 6px;border-radius:12px;transition:background .15s}
+  .stat[data-flt]:active{background:rgba(255,255,255,.05)}
+  .mini.sm{width:26px;height:26px}
+  .pico{display:flex;align-items:center;flex-shrink:0;gap:1px}
+  .fchip{display:inline-flex;align-items:center;gap:8px;background:var(--acbg);border:1px solid rgba(120,160,255,.4);color:#bcd7ff;
+    border-radius:99px;padding:6px 6px 6px 12px;font-size:12.5px;margin-bottom:10px;max-width:100%;animation:pop .3s var(--spring)}
+  .fchip .fx{width:22px;height:22px;border-radius:50%;border:none;background:rgba(120,160,255,.25);color:#dfe9ff;font-size:12px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0}
+  .fchip .ftxt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .seclabel.tgl{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .seclabel.tgl::after{content:'▾';color:var(--muted);transition:transform .2s;flex-shrink:0}
+  .seclabel.tgl.closed::after{transform:rotate(-90deg)}
   .overlay{position:fixed;inset:0;background:rgba(5,6,10,.66);z-index:20;display:flex;align-items:flex-end;
     opacity:0;pointer-events:none;transition:opacity .22s ease}
   .overlay.on{opacity:1;pointer-events:auto}
@@ -203,6 +215,7 @@
 
   <!-- 戦績 -->
   <section class="view" id="v-log">
+    <div id="logFilterBar"></div>
     <div class="kpis">
       <div class="kpi"><div class="v" id="kTotal">0</div><div class="k">試合</div></div>
       <div class="kpi"><div class="v" id="kWL">0-0</div><div class="k">勝-敗</div></div>
@@ -219,14 +232,24 @@
       <div class="kpi"><div class="v" id="aWL">0-0</div><div class="k">勝-敗</div></div>
       <div class="kpi"><div class="v" id="aRate">—</div><div class="k">勝率</div></div>
     </div>
-    <div class="seclabel">苦手な相手（選出時の勝率が低い順 · 2戦以上）</div>
-    <div class="card"><div id="weakList"><p class="empty">データ不足</p></div></div>
-    <div class="seclabel">よく当たる相手（頻度・先発率）</div>
-    <div class="card"><div id="faceList"><p class="empty">データ不足</p></div></div>
-    <div class="seclabel">相手の型傾向（持ち物・メガ）</div>
-    <div class="card"><div id="setList"><p class="empty">型メモがありません</p></div></div>
-    <div class="seclabel">自分の選出率・選出時勝率</div>
+    <div class="card" style="padding:10px 14px"><div class="lbl" style="margin-bottom:4px">勝率推移</div><div id="trendLine" class="hint" style="margin:0">—</div></div>
+    <p class="hint" style="margin:2px 2px 10px">各行をタップすると該当する対戦履歴を表示します</p>
+    <div class="seclabel tgl">自分の選出率・選出時勝率</div>
     <div class="card"><div id="myList"><p class="empty">構築未選択</p></div></div>
+    <div class="seclabel tgl">選出パターン別勝率</div>
+    <div class="card"><div id="selPatList"><p class="empty">データ不足</p></div></div>
+    <div class="seclabel tgl">先発パターン別勝率</div>
+    <div class="card"><div id="leadPatList"><p class="empty">データ不足</p></div></div>
+    <div class="seclabel tgl">苦手な相手（選出時の勝率が低い順 · 2戦以上）</div>
+    <div class="card"><div id="weakList"><p class="empty">データ不足</p></div></div>
+    <div class="seclabel tgl">相手の採用率（採用回数・選出率・先発率）</div>
+    <div class="card"><div id="faceList"><p class="empty">データ不足</p></div></div>
+    <div class="seclabel tgl">相手の初手ペア別 勝率</div>
+    <div class="card"><div id="oppLeadList"><p class="empty">データ不足</p></div></div>
+    <div class="seclabel tgl">相手の組み合わせ（並び共起・選出ペア）</div>
+    <div class="card"><div id="oppPairList"><p class="empty">データ不足</p></div></div>
+    <div class="seclabel tgl">相手の型傾向（持ち物・メガ）</div>
+    <div class="card"><div id="setList"><p class="empty">型メモがありません</p></div></div>
   </section>
 
   <!-- データ -->
@@ -242,7 +265,7 @@
       <textarea id="ioArea" style="margin-top:10px" placeholder="ここに貼り付けて「読み込み」で復元"></textarea>
     </div>
     <div class="card"><div class="lbl">レギュレーション表示名</div><input id="regName" placeholder="Reg. M-B" /></div>
-    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v9（メガ切替で持ち物を自動でメガストーンに）。データは端末内(localStorage)に保存されます。</p></div>
+    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v10（分析強化: 選出/先発パターン勝率・相手メタ分析・行タップで履歴ドリルダウン）。データは端末内(localStorage)に保存されます。</p></div>
   </section>
 </main>
 
@@ -367,6 +390,7 @@ function setNum(el, txt){
   const t0=performance.now(), dur=380;
   requestAnimationFrame(function f(t){ const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
     el.textContent=Math.round(from+(target-from)*e)+suf; if(p<1) requestAnimationFrame(f); });
+  setTimeout(()=>{ el.textContent=txt; }, dur+60);   // rAF停止時（非表示タブ等）でも最終値を保証
 }
 
 // ===== ポケモンピッカー（連続選択・部分更新）=====
@@ -560,23 +584,45 @@ $('saveBtn').addEventListener('click', ()=>{
   const payload={ opp:clone(draft.opp), oppSel:clone(draft.oppSel), mySel:clone(draft.mySel), sets:cleanSets, result:draft.result, notes:$('notes').value.trim() };
   if(editingId){ const idx=logs.findIndex(m=>m.id===editingId); if(idx>-1) logs[idx]=Object.assign(logs[idx],payload); }
   else logs.unshift(Object.assign({ id:Date.now(), date:new Date().toISOString().slice(0,10), teamId:t?t.id:null, teamName:t?t.name:'' }, payload));
-  save(LS.logs,logs); hap([10,30,14]); resetDraft(); renderLog(); refreshAnaFilter(); renderAna(); go('log');
+  save(LS.logs,logs); hap([10,30,14]); resetDraft(); logFilter=null; renderLog(); refreshAnaFilter(); renderAna(); go('log');
 });
 
 // ===== 戦績 =====
 function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+// 分析からのドリルダウン用フィルタ（条件オブジェクト）
+let logFilter=null;
+const keysOf=a=>(a||[]).map(selKey);
+function matchFilter(m){
+  const f=logFilter; if(!f) return true;
+  if(f.teamId && m.teamId!==f.teamId) return false;
+  switch(f.type){
+    case 'mySelSet': return keysOf(m.mySel).sort().join('+')===f.k;
+    case 'myLead':   return keysOf((m.mySel||[]).slice(0,2)).sort().join('+')===f.k;
+    case 'oppLead':  return keysOf((m.oppSel||[]).slice(0,2)).sort().join('+')===f.k;
+    case 'mySelHas': return keysOf(m.mySel).includes(f.k);
+    case 'oppHas':   return keysOf(m.opp).includes(f.k);
+    case 'oppSelHas':return keysOf(m.oppSel).includes(f.k);
+    case 'faced':    { const l=(m.oppSel&&m.oppSel.length)?m.oppSel:m.opp; return keysOf(l).includes(f.k); }
+    case 'oppPair':  return f.ks.every(k=>keysOf(m.opp).includes(k));
+    case 'oppSelPair':return f.ks.every(k=>keysOf(m.oppSel).includes(k));
+  }
+  return true;
+}
 function renderLog(){
-  const w=logs.filter(m=>m.result==='win').length;
-  setNum($('kTotal'), String(logs.length)); $('kWL').textContent=w+'-'+(logs.length-w);
-  setNum($('kRate'), logs.length? Math.round(w/logs.length*100)+'%' : '—');
+  const L = logFilter? logs.filter(matchFilter) : logs;
+  const w=L.filter(m=>m.result==='win').length;
+  setNum($('kTotal'), String(L.length)); $('kWL').textContent=w+'-'+(L.length-w);
+  setNum($('kRate'), L.length? Math.round(w/L.length*100)+'%' : '—');
+  $('logFilterBar').innerHTML = logFilter? `<div class="fchip"><span class="ftxt">${esc(logFilter.label||'フィルタ中')}</span><button class="fx" id="fltClear" aria-label="フィルタ解除">×</button></div>` : '';
   const list=$('logList');
-  if(!logs.length){ list.innerHTML='<p class="empty">まだ記録がありません</p>'; return; }
-  list.innerHTML=logs.map(m=>`<div class="match"><span class="res ${m.result}">${m.result==='win'?'勝':'負'}</span>
+  if(!L.length){ list.innerHTML=`<p class="empty">${logFilter?'条件に合う記録がありません':'まだ記録がありません'}</p>`; return; }
+  list.innerHTML=L.map(m=>`<div class="match"><span class="res ${m.result}">${m.result==='win'?'勝':'負'}</span>
     <div style="flex:1;min-width:0"><div class="hint" style="margin:0 0 2px">${esc(m.date||'')}${m.teamName?' ・ 自:'+esc(m.teamName):''}</div>
       <div style="display:flex;gap:2px;flex-wrap:wrap">${(m.oppSel&&m.oppSel.length?m.oppSel:m.opp).map(e=>`<img class="mini" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FBI}" alt="${nameOf(e)}">`).join('')}</div>
       ${m.notes?`<div class="hint" style="margin-top:3px">${esc(m.notes)}</div>`:''}</div>
     <div style="display:flex;flex-direction:column;gap:5px"><button class="btn sm" data-edit="${m.id}">編集</button><button class="btn sm" data-del="${m.id}">×</button></div></div>`).join('');
 }
+$('logFilterBar').addEventListener('click', e=>{ if(e.target.id==='fltClear'){ logFilter=null; hap(6); renderLog(); } });
 $('logList').addEventListener('click', e=>{
   const del=e.target.dataset.del; if(del&&confirm('この記録を削除しますか？')){ logs=logs.filter(m=>m.id!=del); save(LS.logs,logs); renderLog(); renderAna(); return; }
   const ed=e.target.dataset.edit; if(ed) loadForEdit(+ed);
@@ -592,39 +638,123 @@ function refreshAnaFilter(){ const sel=$('anaFilter'); const cur=sel.value;
   if([...sel.options].some(o=>o.value===cur)) sel.value=cur; }
 $('anaFilter').addEventListener('change', renderAna);
 function filteredLogs(){ const f=$('anaFilter').value; return f? logs.filter(m=>m.teamId===f) : logs; }
+const pe = e => ({d:e.d, f:e.f, s:e.s});                    // 集計用に最小化したエントリ
+const namesOf = es => es.map(e=>jaName(e.d)).join('+');
+const fltA = f => ` data-flt="${encodeURIComponent(JSON.stringify(f))}"`;  // 行タップ→履歴ドリルダウン
 function renderAna(){
   const L=filteredLogs(); const w=L.filter(m=>m.result==='win').length;
   setNum($('aTotal'), String(L.length)); $('aWL').textContent=w+'-'+(L.length-w);
   setNum($('aRate'), L.length? Math.round(w/L.length*100)+'%' : '—');
-  const opp={};
+
+  // 勝率推移（logs は新しい順）＋連勝連敗
+  if(L.length){
+    const seg=k=>{ const r=L.slice(0,k); const rw=r.filter(m=>m.result==='win').length; return `直近${r.length}戦 ${rw}-${r.length-rw} (${Math.round(rw/r.length*100)}%)`; };
+    let st=1; while(st<L.length && L[st].result===L[0].result) st++;
+    $('trendLine').textContent = seg(10) + (L.length>10? ' ・ '+seg(20) : '') + ` ・ ${st}${L[0].result==='win'?'連勝':'連敗'}中`;
+  } else $('trendLine').textContent='—';
+
+  // 相手と対面した試合ベース（苦手な相手。oppSel が無い古いログは opp で代用）
+  const faced={};
   L.forEach(m=>{ const list=m.oppSel&&m.oppSel.length?m.oppSel:m.opp; const seen=new Set();
-    list.forEach((e,idx)=>{ const k=selKey(e); if(seen.has(k))return; seen.add(k);
-      const o=opp[k]=opp[k]||{e,n:0,w:0,lead:0,mega:0}; o.n++; if(m.result==='win')o.w++; if(idx<2&&m.oppSel&&m.oppSel.length)o.lead++; if(e.m)o.mega++; }); });
-  const arr=Object.values(opp);
-  const weak=arr.filter(x=>x.n>=2).sort((a,b)=>a.w/a.n-b.w/b.n).slice(0,8);
-  $('weakList').innerHTML = weak.length? weak.map(x=>statRow(x.e,x.w/x.n,`${Math.round(x.w/x.n*100)}% (${x.w}/${x.n})`,'loss')).join('') : '<p class="empty">2戦以上のデータが必要です</p>';
-  const face=arr.slice().sort((a,b)=>b.n-a.n).slice(0,10); const maxN=face.length?face[0].n:1;
-  $('faceList').innerHTML = face.length? face.map(x=>statRow(x.e,x.n/maxN,`${x.n}回 / 先発${Math.round(x.lead/x.n*100)}%`,'accent')).join('') : '<p class="empty">データ不足</p>';
+    (list||[]).forEach(e=>{ const k=selKey(e); if(seen.has(k))return; seen.add(k);
+      const o=faced[k]=faced[k]||{e:pe(e),n:0,w:0}; o.n++; if(m.result==='win')o.w++; }); });
+  const weak=Object.values(faced).filter(x=>x.n>=2).sort((a,b)=>a.w/a.n-b.w/b.n).slice(0,8);
+  $('weakList').innerHTML = weak.length? weak.map(x=>statRow(x.e,x.w/x.n,`${Math.round(x.w/x.n*100)}% (${x.w}/${x.n})`,'loss',
+    {type:'faced',k:selKey(x.e),label:'相手: '+jaName(x.e.d)+'（選出時）'})).join('') : '<p class="empty">2戦以上のデータが必要です</p>';
+
+  // 相手の採用率・選出率・先発率
+  const use={};
+  L.forEach(m=>{
+    const s1=new Set(); (m.opp||[]).forEach(e=>{ const k=selKey(e); if(s1.has(k))return; s1.add(k);
+      const o=use[k]=use[k]||{e:pe(e),n:0,sel:0,lead:0}; o.n++; });
+    const s2=new Set(); (m.oppSel||[]).forEach((e,idx)=>{ const k=selKey(e); if(s2.has(k))return; s2.add(k);
+      const o=use[k]=use[k]||{e:pe(e),n:0,sel:0,lead:0}; o.sel++; if(idx<2)o.lead++; });
+  });
+  const face=Object.values(use).sort((a,b)=>b.n-a.n).slice(0,12); const maxN=face.length?Math.max(...face.map(x=>x.n)):1;
+  $('faceList').innerHTML = face.length? face.map(x=>statRow(x.e, x.n/maxN,
+    `${x.n}回·選${x.n?Math.round(Math.min(x.sel,x.n)/x.n*100):0}%·先${x.sel?Math.round(x.lead/x.sel*100):0}%`,'accent',
+    {type:'oppHas',k:selKey(x.e),label:'相手の並びに'+jaName(x.e.d)})).join('') : '<p class="empty">データ不足</p>';
+
+  // 選出パターン（自分の選出の組）／先発パターン（先頭2体）
+  const pat={}, lead={};
+  L.forEach(m=>{
+    if(m.mySel&&m.mySel.length){
+      const k=keysOf(m.mySel).sort().join('+');
+      const o=pat[k]=pat[k]||{es:m.mySel.map(pe),n:0,w:0,k}; o.n++; if(m.result==='win')o.w++;
+      if(m.mySel.length>=2){
+        const p=m.mySel.slice(0,2), k2=keysOf(p).sort().join('+');
+        const o2=lead[k2]=lead[k2]||{es:p.map(pe),n:0,w:0,k:k2}; o2.n++; if(m.result==='win')o2.w++;
+      }
+    }
+  });
+  const pats=Object.values(pat).sort((a,b)=>b.n-a.n).slice(0,10);
+  $('selPatList').innerHTML = pats.length? pats.map(o=>patRow(o.es,o.n,o.w,{type:'mySelSet',k:o.k,label:'選出: '+namesOf(o.es)})).join('') : '<p class="empty">自分の選出を記録すると集計されます</p>';
+  const leads=Object.values(lead).sort((a,b)=>b.n-a.n).slice(0,10);
+  $('leadPatList').innerHTML = leads.length? leads.map(o=>patRow(o.es,o.n,o.w,{type:'myLead',k:o.k,label:'先発: '+namesOf(o.es)})).join('') : '<p class="empty">データ不足</p>';
+
+  // 相手の初手ペア別 勝率
+  const ol={};
+  L.forEach(m=>{ if(!(m.oppSel&&m.oppSel.length>=2)) return;
+    const p=m.oppSel.slice(0,2), k=keysOf(p).sort().join('+');
+    const o=ol[k]=ol[k]||{es:p.map(pe),n:0,w:0,k}; o.n++; if(m.result==='win')o.w++; });
+  const ols=Object.values(ol).sort((a,b)=>b.n-a.n).slice(0,10);
+  $('oppLeadList').innerHTML = ols.length? ols.map(o=>patRow(o.es,o.n,o.w,{type:'oppLead',k:o.k,label:'相手初手: '+namesOf(o.es)})).join('') : '<p class="empty">データ不足</p>';
+
+  // 相手の組み合わせ（並び共起ペア／選出ペア）
+  const pairAgg=get=>{ const P={};
+    L.forEach(m=>{ const ents={}; (get(m)||[]).forEach(e=>{ ents[selKey(e)]=e; });
+      const ks=Object.keys(ents).sort();
+      for(let i=0;i<ks.length;i++)for(let j=i+1;j<ks.length;j++){ const k=ks[i]+'+'+ks[j];
+        const o=P[k]=P[k]||{es:[pe(ents[ks[i]]),pe(ents[ks[j]])],n:0,w:0,ks:[ks[i],ks[j]]}; o.n++; if(m.result==='win')o.w++; } });
+    return Object.values(P).sort((a,b)=>b.n-a.n); };
+  const tp=pairAgg(m=>m.opp).filter(x=>x.n>=2).slice(0,8), sp2=pairAgg(m=>m.oppSel).slice(0,8);
+  let pairHTML='';
+  if(tp.length) pairHTML += '<div class="seclbl" style="margin-top:2px">並びの共起ペア（2回以上）</div>'+tp.map(o=>patRow(o.es,o.n,o.w,{type:'oppPair',ks:o.ks,label:'相手並び: '+namesOf(o.es)})).join('');
+  if(sp2.length) pairHTML += '<div class="seclbl">選出されたペア</div>'+sp2.map(o=>patRow(o.es,o.n,o.w,{type:'oppSelPair',ks:o.ks,label:'相手選出: '+namesOf(o.es)})).join('');
+  $('oppPairList').innerHTML = pairHTML || '<p class="empty">データ不足</p>';
+
+  // 相手の型傾向（持ち物・メガ）
   const sets={};
-  L.forEach(m=>{ (m.oppSel||[]).forEach(e=>{ const k=selKey(e); const o=sets[k]=sets[k]||{e,item:{},mega:0,n:0}; o.n++; if(e.m)o.mega++;
+  L.forEach(m=>{ (m.oppSel||[]).forEach(e=>{ const k=selKey(e); const o=sets[k]=sets[k]||{e:pe(e),item:{},mega:0,n:0}; o.n++; if(e.m)o.mega++;
     const sm=m.sets&&m.sets[k]; if(sm&&sm.item){ o.item[sm.item]=(o.item[sm.item]||0)+1; } }); });
   const setArr=Object.values(sets).filter(o=>Object.keys(o.item).length||o.mega);
   $('setList').innerHTML = setArr.length? setArr.sort((a,b)=>b.n-a.n).map(o=>{
     const items=Object.entries(o.item).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,n])=>`<span class="tag">${esc(k)}×${n}</span>`).join('');
     const mega=o.mega?`<span class="tag">メガ×${o.mega}</span>`:'';
-    return `<div class="stat"><img class="mini" src="${iconOf(o.e)}" data-fb="${SD(baseSid(o.e.d))}" onerror="${FBI}" alt="${nameOf(o.e)}"><div style="flex:1"><div style="font-size:13px">${nameOf(o.e)}</div><div class="tags">${items}${mega}</div></div></div>`;
+    return `<div class="stat"${fltA({type:'oppSelHas',k:selKey(o.e),label:'相手選出: '+jaName(o.e.d)})}><img class="mini" src="${iconOf(o.e)}" data-fb="${SD(baseSid(o.e.d))}" onerror="${FBI}" alt="${nameOf(o.e)}"><div style="flex:1"><div style="font-size:13px">${nameOf(o.e)}</div><div class="tags">${items}${mega}</div></div></div>`;
   }).join('') : '<p class="empty">記録に型メモがありません</p>';
+
+  // 自分の選出率・選出時勝率
   const fid=$('anaFilter').value; const myT = fid? teams.find(t=>t.id===fid) : activeTeam();
   if(myT && myT.roster.length && L.length){
     const my={}; myT.roster.forEach(e=>my[selKey(e)]={e,n:0,w:0});
     L.forEach(m=>m.mySel.forEach(e=>{ const k=selKey(e); if(my[k]){my[k].n++; if(m.result==='win')my[k].w++;} }));
-    $('myList').innerHTML = myT.roster.map(e=>{ const x=my[selKey(e)]; return statRow(e, x.n/L.length, `選出${Math.round(x.n/L.length*100)}% / 勝${x.n?Math.round(x.w/x.n*100):0}%`,'win'); }).join('');
+    $('myList').innerHTML = myT.roster.map(e=>{ const x=my[selKey(e)]; return statRow(e, x.n/L.length, `選出${Math.round(x.n/L.length*100)}% / 勝${x.n?Math.round(x.w/x.n*100):0}%`,'win',
+      {type:'mySelHas',k:selKey(e),label:'自分の選出: '+jaName(e.d)}); }).join('');
   } else { $('myList').innerHTML='<p class="empty">構築フィルタを選ぶ（または構築を登録する）と集計されます</p>'; }
 }
-function statRow(e,frac,label,color){ const col=color==='loss'?'var(--loss)':color==='win'?'var(--win)':'var(--ac)';
-  return `<div class="stat"><img class="mini" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FBI}" alt="${nameOf(e)}">
+function statRow(e,frac,label,color,f){ const col=color==='loss'?'var(--loss)':color==='win'?'var(--win)':'var(--ac)';
+  return `<div class="stat"${f?fltA(f):''}><img class="mini" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FBI}" alt="${nameOf(e)}">
     <span style="font-size:13px;width:84px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${nameOf(e)}</span>
     <div class="bar"><i style="width:${Math.round(frac*100)}%;background:${col}"></i></div><span class="pct">${label}</span></div>`; }
+function patRow(es,n,w,f){ const wr=n?Math.round(w/n*100):0; const col=wr>=50?'var(--win)':'var(--loss)';
+  return `<div class="stat"${fltA(f)}><span class="pico">${es.map(e=>`<img class="mini sm" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FBI}" alt="${nameOf(e)}">`).join('')}</span>
+    <div class="bar"><i style="width:${wr}%;background:${col}"></i></div><span class="pct">${wr}% (${w}/${n})</span></div>`; }
+// 分析行タップ → 該当履歴へドリルダウン（構築フィルタも引き継ぐ）
+$('v-ana').addEventListener('click', e=>{
+  const row=e.target.closest('[data-flt]'); if(!row) return;
+  try{
+    const f=JSON.parse(decodeURIComponent(row.dataset.flt));
+    const tid=$('anaFilter').value;
+    if(tid){ f.teamId=tid; const t=teams.find(x=>x.id===tid); if(t) f.label+=' ・ '+t.name; }
+    logFilter=f; hap(8); go('log');
+  }catch(err){}
+});
+// セクション折りたたみ
+document.querySelectorAll('#v-ana .seclabel.tgl').forEach(l=>l.addEventListener('click',()=>{
+  const card=l.nextElementSibling; const closed=l.classList.toggle('closed');
+  if(card) card.style.display=closed?'none':''; hap(5);
+}));
 
 // ===== データ =====
 function renderTeams(){
