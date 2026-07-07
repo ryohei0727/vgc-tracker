@@ -177,6 +177,32 @@
   .iti .ph{width:28px;height:28px;flex-shrink:0;border-radius:9px;background:var(--card2)}
   .banner{background:var(--acbg);border:1px solid rgba(120,160,255,.4);color:#bcd7ff;border-radius:14px;padding:9px 12px;margin-bottom:10px;
     display:flex;justify-content:space-between;align-items:center;font-size:13px}
+  /* セット編集シート */
+  .sehead{display:flex;align-items:center;gap:10px;padding:2px 0 8px}
+  .sehead img{width:44px;height:44px;object-fit:contain}
+  .sehead .senm{font-weight:800;font-size:15px}
+  .serow{display:flex;align-items:center;gap:10px;margin:8px 0}
+  .serow .selbl{font-size:12px;color:var(--sub);font-weight:700;width:52px;flex-shrink:0}
+  .statgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;text-align:center;margin:8px 0 4px}
+  .statgrid .sk{font-size:10px;color:var(--muted);font-weight:800}
+  .statgrid .sv{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+  .sprow{display:flex;align-items:center;gap:8px;margin:5px 0}
+  .sprow .spk{font-size:11px;font-weight:800;color:var(--sub);width:16px;text-align:center}
+  .sprow input[type=range]{flex:1;padding:0;height:26px;accent-color:var(--ac);background:none;border:none}
+  .sprow .spv{font-size:12px;font-variant-numeric:tabular-nums;width:64px;text-align:right;color:var(--sub)}
+  .budget{font-size:12px;font-weight:700;color:var(--sub);text-align:right;margin:2px 0 6px}
+  .budget.over{color:var(--loss)}
+  .mvbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+  .mvbtn{border:1px solid var(--line2);background:var(--card2);color:var(--txt);border-radius:12px;padding:9px 10px;font-size:13px;cursor:pointer;
+    display:flex;align-items:center;gap:6px;min-height:40px;transition:transform .18s var(--spring)}
+  .mvbtn:active{transform:scale(.95)}
+  .mvbtn.empty{border-style:dashed;color:var(--muted)}
+  .tchip{font-size:9.5px;font-weight:800;color:#fff;border-radius:6px;padding:1px 6px;flex-shrink:0;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+  .mvtxt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;text-align:left}
+  .seti{display:flex;align-items:center;gap:10px;padding:11px 6px;border-bottom:1px solid var(--line);cursor:pointer;font-size:14.5px}
+  .seti:active{background:var(--card2)}
+  .seti .mvmeta{margin-left:auto;font-size:11.5px;color:var(--muted);flex-shrink:0;font-variant-numeric:tabular-nums}
+  .gearbadge{position:absolute;bottom:17px;right:2px;font-size:10px}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -265,7 +291,7 @@
       <textarea id="ioArea" style="margin-top:10px" placeholder="ここに貼り付けて「読み込み」で復元"></textarea>
     </div>
     <div class="card"><div class="lbl">レギュレーション表示名</div><input id="regName" placeholder="Reg. M-B" /></div>
-    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v10.1（分析強化＋チャンピオンズ新メガ11種対応: ライチュウX/Y・ペンドラー・ズルズキン・シビルドン・シャンデラ・ブリガロン・ゲッコウガ・カラマネロ・ガメノデス・ドラミドロ・タイレーツ）。データは端末内(localStorage)に保存されます。</p></div>
+    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v10.2（構築セット登録: データタブでメンバーをタップ→持ち物・特性・性格・能力ポイント(SP)・わざを登録。実数値をリアルタイム表示。次版のダメージ計算に連携）。データは端末内(localStorage)に保存されます。</p></div>
   </section>
 </main>
 
@@ -288,6 +314,29 @@
     </div>
     <input id="pickSearch" placeholder="日本語・英語・図鑑番号で検索" autocomplete="off">
     <div id="pickBody" style="overflow:auto"></div>
+  </div>
+</div>
+
+<!-- セット編集シート（構築メンバーの持ち物/特性/性格/SP/技） -->
+<div class="overlay" id="setEditor">
+  <div class="sheet">
+    <div class="dragzone">
+      <div class="grab"></div>
+      <div class="head"><h3>セット編集</h3><button class="btn sm" id="seClose">完了</button></div>
+    </div>
+    <div id="seBody" style="overflow:auto"></div>
+  </div>
+</div>
+
+<!-- 技ピッカー -->
+<div class="overlay" id="movePicker">
+  <div class="sheet">
+    <div class="dragzone">
+      <div class="grab"></div>
+      <div class="head"><h3>技を選択</h3><button class="btn sm" id="mvClose">閉じる</button></div>
+    </div>
+    <input id="mvSearch" placeholder="技名で検索（日本語・英語）" autocomplete="off">
+    <div id="mvBody" class="ilist"></div>
   </div>
 </div>
 
@@ -371,6 +420,33 @@ const ITEMS=[
 ];
 const ITEM_MAP=Object.fromEntries(ITEMS.map(i=>[i.n,i.s]));
 const itemIcon=n=>{ const s=ITEM_MAP[n]; return s? IIMG+s+'.png':''; };
+
+// ===== バトルデータ（種族値/タイプ/特性/技。data/*.json は Showdown master 由来） =====
+let DEX=null, MOVES=null, MOVE_BY_EN={};
+fetch('./data/pokedex.json').then(r=>r.json()).then(j=>{ DEX=j; }).catch(()=>{});
+fetch('./data/moves.json').then(r=>r.json()).then(j=>{ MOVES=j; MOVE_BY_EN=Object.fromEntries(j.map(m=>[m.en,m])); }).catch(()=>{});
+const dexOf = e => DEX? (DEX.forms[norm(e.s)] || DEX.base[String(e.d)] || null) : null;
+const TYPE_JA={Normal:'ノーマル',Fire:'ほのお',Water:'みず',Electric:'でんき',Grass:'くさ',Ice:'こおり',Fighting:'かくとう',Poison:'どく',Ground:'じめん',
+  Flying:'ひこう',Psychic:'エスパー',Bug:'むし',Rock:'いわ',Ghost:'ゴースト',Dragon:'ドラゴン',Dark:'あく',Steel:'はがね',Fairy:'フェアリー'};
+const TYPE_C={Normal:'#9aa0a8',Fire:'#f08030',Water:'#6890f0',Electric:'#e0b830',Grass:'#78c850',Ice:'#7cc7c7',Fighting:'#c03028',Poison:'#a040a0',Ground:'#d8b464',
+  Flying:'#a890f0',Psychic:'#f85888',Bug:'#a8b820',Rock:'#b8a038',Ghost:'#705898',Dragon:'#7038f8',Dark:'#705848',Steel:'#9797b5',Fairy:'#e78fa4'};
+// 性格 [名前, ↑index, ↓index]（index: 1=A 2=B 3=C 4=D 5=S / ↑=↓は無補正）
+const NATURES=[['がんばりや',0,0],['さみしがり',1,2],['いじっぱり',1,3],['やんちゃ',1,4],['ゆうかん',1,5],
+ ['ずぶとい',2,1],['すなお',0,0],['わんぱく',2,3],['のうてんき',2,4],['のんき',2,5],
+ ['ひかえめ',3,1],['おっとり',3,2],['てれや',0,0],['うっかりや',3,4],['れいせい',3,5],
+ ['おだやか',4,1],['おとなしい',4,2],['しんちょう',4,3],['きまぐれ',0,0],['なまいき',4,5],
+ ['おくびょう',5,1],['せっかち',5,2],['ようき',5,3],['むじゃき',5,4],['まじめ',0,0]];
+const SPK=['h','a','b','c','d','s'], SPL=['H','A','B','C','D','S'];
+// チャンピオンズ実数値: HP=種族値+SP+75 / 他=floor((種族値+SP+20.5)×性格) ※Lv50固定・個体値なし
+function statsOf(b, sp, natIdx){
+  sp=sp||{}; const nat=NATURES[natIdx||0]||NATURES[0];
+  const out=[b[0]+(sp.h||0)+75];
+  for(let i=1;i<6;i++){ let v=b[i]+(sp[SPK[i]]||0)+20.5;
+    if(nat[1]!==nat[2]){ if(nat[1]===i) v*=1.1; else if(nat[2]===i) v*=0.9; }
+    out.push(Math.floor(v)); }
+  return out;
+}
+const defaultSet=()=>({item:'', ab:'', nat:0, sp:{h:0,a:0,b:0,c:0,d:0,s:0}, mv:[null,null,null,null]});
 
 const INDEX = (window.POKE_JA||[]).map((ja,i)=>({d:i+1, ja, e:(POKE_EN[i]||''), j:ja.toLowerCase(), el:(POKE_EN[i]||'').toLowerCase()}));
 
@@ -476,10 +552,10 @@ function enableDrag(overlayId, closeFn){
 enableDrag('picker', closePicker);
 enableDrag('itemPicker', ()=>closeItemPicker());
 
-// ===== アイテムピッカー =====
-let itemKey=null;
-function openItemPicker(k){ itemKey=k; $('itemSearch').value=''; renderItems(''); $('itemPicker').classList.add('on'); }
-function closeItemPicker(){ $('itemPicker').classList.remove('on'); itemKey=null; }
+// ===== アイテムピッカー（コールバック式: 記録の型メモとセット編集で共用） =====
+let itemCb=null;
+function openItemPicker(cb){ itemCb=cb; $('itemSearch').value=''; renderItems(''); $('itemPicker').classList.add('on'); }
+function closeItemPicker(){ $('itemPicker').classList.remove('on'); itemCb=null; }
 function itiHTML(it){ const ic=itemIcon(it.n); return `<div class="iti" data-iname="${it.n}">${ic?`<img src="${ic}" onerror="this.style.visibility='hidden'">`:'<span class="ph"></span>'}<span>${it.n}</span></div>`; }
 function renderItems(q){
   q=q.trim(); const body=$('itemBody'); let html='';
@@ -497,13 +573,101 @@ function renderItems(q){
 }
 $('itemSearch').addEventListener('input', e=>renderItems(e.target.value));
 $('itemBody').addEventListener('click', e=>{
-  const row=e.target.closest('[data-iname],[data-icustom]'); if(!row||!itemKey) return;
+  const row=e.target.closest('[data-iname],[data-icustom]'); if(!row||!itemCb) return;
   const val = row.dataset.icustom!==undefined? row.dataset.icustom : row.dataset.iname;
-  draft.sets[itemKey]=draft.sets[itemKey]||{}; draft.sets[itemKey].item=val;
-  hap(10); closeItemPicker(); renderSetMemos();
+  const cb=itemCb; hap(10); closeItemPicker(); cb(val);
 });
 $('itemClose').addEventListener('click', ()=>closeItemPicker());
 $('itemPicker').addEventListener('click', e=>{ if(e.target.id==='itemPicker') closeItemPicker(); });
+
+// ===== 技ピッカー =====
+let mvCb=null;
+function openMovePicker(cb){ mvCb=cb; $('mvSearch').value=''; renderMoves(''); $('movePicker').classList.add('on'); }
+function closeMovePicker(){ $('movePicker').classList.remove('on'); mvCb=null; }
+function mvRow(m){ return `<div class="seti" data-mven="${esc(m.en)}"><span class="tchip" style="background:${TYPE_C[m.t]||'#666'}">${TYPE_JA[m.t]||m.t}</span><span>${m.ja}</span><span class="mvmeta">${m.c===0?'変化':m.c===1?'物理':'特殊'}${m.p?' '+m.p:''}</span></div>`; }
+function renderMoves(q){
+  const body=$('mvBody');
+  if(!MOVES){ body.innerHTML='<p class="empty">技データ読込中…（通信環境を確認）</p>'; return; }
+  q=q.trim(); const qn=norm(q.toLowerCase());
+  const res = q? MOVES.filter(m=>m.ja.includes(q)||(qn&&norm(m.en).includes(qn))) : MOVES;
+  body.innerHTML = '<div class="seti" data-mven=""><span class="ph" style="width:28px"></span><span style="color:var(--muted)">なし（クリア）</span></div>'
+    + res.slice(0,100).map(mvRow).join('')
+    + (res.length>100?`<p class="hint" style="padding:8px 6px">全${res.length}件 — 検索で絞り込んでください</p>`:'');
+}
+$('mvSearch').addEventListener('input', e=>renderMoves(e.target.value));
+$('mvBody').addEventListener('click', e=>{
+  const row=e.target.closest('[data-mven]'); if(!row||!mvCb) return;
+  const m=row.dataset.mven? MOVE_BY_EN[row.dataset.mven]||null : null;
+  const cb=mvCb; hap(10); closeMovePicker(); cb(m);
+});
+$('mvClose').addEventListener('click', closeMovePicker);
+$('movePicker').addEventListener('click', e=>{ if(e.target.id==='movePicker') closeMovePicker(); });
+enableDrag('movePicker', closeMovePicker);
+
+// ===== セット編集シート（構築メンバー: 持ち物/特性/性格/SP/技） =====
+let seCtx=null; // {t: team, e: entry, set}
+function openSetEditor(tid, idx){
+  const t=teams.find(x=>x.id===tid); if(!t||!t.roster[idx]) return;
+  const e=t.roster[idx];
+  e.set=e.set||defaultSet();
+  seCtx={t,e,set:e.set};
+  renderSE(); $('setEditor').classList.add('on');
+}
+function closeSetEditor(){ $('setEditor').classList.remove('on'); seCtx=null; save(LS.teams,teams); renderTeams(); }
+function renderSE(){
+  const {e,set:s}=seCtx; const d=dexOf(e);
+  const used=SPK.reduce((a,k)=>a+(s.sp[k]||0),0);
+  const st=d? statsOf(d.b,s.sp,s.nat):null;
+  const natOpts=NATURES.map((n,i)=>`<option value="${i}" ${i===s.nat?'selected':''}>${n[0]}${n[1]!==n[2]?`（${SPL[n[1]]}↑${SPL[n[2]]}↓）`:''}</option>`).join('');
+  const abList=(d&&d.a&&d.a.length)? d.a : [];
+  const abOpts='<option value="">特性—</option>'+abList.map(a=>`<option ${a===s.ab?'selected':''}>${a}</option>`).join('')
+    +(s.ab&&!abList.includes(s.ab)?`<option selected>${esc(s.ab)}</option>`:'');
+  const ic=itemIcon(s.item);
+  $('seBody').innerHTML=`
+   <div class="sehead"><img src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FBI}"><div><div class="senm">${nameOf(e)}</div>
+     <div style="margin-top:2px">${d? d.t.map(t=>`<span class="tchip" style="background:${TYPE_C[t]}">${TYPE_JA[t]}</span>`).join(' '):'<span class="hint">図鑑データ読込中…</span>'}</div></div></div>
+   <div class="serow"><span class="selbl">持ち物</span><button class="itembtn${s.item?'':' empty'}" id="seItem" style="width:auto;min-width:50%;max-width:none">${ic?`<img src="${ic}" onerror="this.style.display='none'">`:''}<span class="itxt">${s.item||'＋ 持ち物'}</span></button></div>
+   <div class="serow"><span class="selbl">特性</span><select id="seAb">${abOpts}</select></div>
+   <div class="serow"><span class="selbl">性格</span><select id="seNat">${natOpts}</select></div>
+   ${st?`<div class="statgrid">${SPL.map(k=>`<span class="sk">${k}</span>`).join('')}${st.map(v=>`<span class="sv">${v}</span>`).join('')}</div>`:''}
+   <div class="budget${used>66?' over':''}" id="seBudget">能力ポイント 残り ${66-used} / 66（各ステ最大32）</div>
+   ${SPK.map((k,i)=>`<div class="sprow"><span class="spk">${SPL[i]}</span><input type="range" min="0" max="32" step="1" value="${s.sp[k]||0}" data-spk="${k}"><span class="spv" data-spv="${i}">${s.sp[k]||0}${st?' → '+st[i]:''}</span></div>`).join('')}
+   <div class="seclbl">わざ（最大4）</div>
+   <div class="mvbtns">${[0,1,2,3].map(i=>{ const en=s.mv&&s.mv[i]; const m=en? MOVE_BY_EN[en]:null;
+     return `<button class="mvbtn${m?'':' empty'}" data-mvslot="${i}">${m?`<span class="tchip" style="background:${TYPE_C[m.t]}">${TYPE_JA[m.t]}</span><span class="mvtxt">${m.ja}</span>`:'＋ わざ'}</button>`; }).join('')}</div>
+   <p class="hint">SP=能力ポイント（1pt=実数値+1・合計66）。登録するとダメージ計算に自動連携されます。</p>`;
+}
+function renderSEValues(){ // スライダー操作中の軽量更新（フォーカス維持）
+  const {e,set:s}=seCtx; const d=dexOf(e); if(!d) return;
+  const st=statsOf(d.b,s.sp,s.nat);
+  const used=SPK.reduce((a,k)=>a+(s.sp[k]||0),0);
+  document.querySelectorAll('#seBody .sv').forEach((el,i)=>el.textContent=st[i]);
+  document.querySelectorAll('#seBody [data-spv]').forEach(el=>{ const i=+el.dataset.spv; el.textContent=(s.sp[SPK[i]]||0)+' → '+st[i]; });
+  const b=$('seBudget'); if(b){ b.textContent=`能力ポイント 残り ${66-used} / 66（各ステ最大32）`; b.classList.toggle('over',used>66); }
+}
+$('seBody').addEventListener('input', e=>{
+  const k=e.target.dataset.spk; if(!k||!seCtx) return;
+  const s=seCtx.set; let v=+e.target.value;
+  const others=SPK.reduce((a,x)=>a+(x===k?0:(s.sp[x]||0)),0);
+  if(others+v>66){ v=66-others; e.target.value=v; }   // 合計66を超えない
+  s.sp[k]=v; renderSEValues();
+});
+$('seBody').addEventListener('change', e=>{
+  if(!seCtx) return;
+  if(e.target.id==='seAb'){ seCtx.set.ab=e.target.value; save(LS.teams,teams); }
+  if(e.target.id==='seNat'){ seCtx.set.nat=+e.target.value; save(LS.teams,teams); renderSEValues(); }
+  if(e.target.dataset.spk){ save(LS.teams,teams); }
+});
+$('seBody').addEventListener('click', e=>{
+  if(!seCtx) return;
+  if(e.target.closest('#seItem')){ openItemPicker(v=>{ if(seCtx){ seCtx.set.item=v; save(LS.teams,teams); renderSE(); } }); return; }
+  const ms=e.target.closest('[data-mvslot]');
+  if(ms){ const slot=+ms.dataset.mvslot;
+    openMovePicker(m=>{ if(seCtx){ seCtx.set.mv=seCtx.set.mv||[null,null,null,null]; seCtx.set.mv[slot]=m? m.en:null; save(LS.teams,teams); renderSE(); } }); }
+});
+$('seClose').addEventListener('click', closeSetEditor);
+$('setEditor').addEventListener('click', e=>{ if(e.target.id==='setEditor') closeSetEditor(); });
+enableDrag('setEditor', closeSetEditor);
 
 // ===== チップ =====
 function chip(e, opts={}){
@@ -512,7 +676,8 @@ function chip(e, opts={}){
   const fm=e.f?`<span class="fm">${e.f}</span>`:'';
   const rm=opts.rmKey!==undefined?`<button class="rm" data-rm="${opts.rmKey}">×</button>`:'';
   const mtog=(opts.megaAvail&&opts.sel)?`<button class="mtog${e.m?'':' off'}" data-mtog="${opts.tapKey}">${e.m||'メガ'}</button>`:'';
-  return `<div class="${cls}" ${opts.tapKey!==undefined?`data-tap="${opts.tapKey}"`:''}>${ld}${rm}${mtog}<img class="ico" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FBI}" alt="${nameOf(e)}"><span class="nm">${jaName(e.d)}</span></div>`;
+  const gear=opts.gear?`<span class="gearbadge">⚙️</span>`:'';
+  return `<div class="${cls}" ${opts.tapKey!==undefined?`data-tap="${opts.tapKey}"`:''}${opts.editKey!==undefined?` data-tedit="${opts.editKey}"`:''}>${ld}${rm}${mtog}${gear}<img class="ico" src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FBI}" alt="${nameOf(e)}"><span class="nm">${jaName(e.d)}</span></div>`;
 }
 function findSel(arr,e){ return arr.findIndex(x=>selKey(x)===selKey(e)); }
 function toggleSel(arr,cand){ const i=findSel(arr,cand); if(i>-1)arr.splice(i,1); else if(arr.length<4)arr.push({d:cand.d,f:cand.f,s:cand.s,m:null}); hap(9); }
@@ -560,7 +725,10 @@ function renderSetMemos(){
       <button class="itembtn${it?'':' empty'}" data-itemkey="${k}">${ic?`<img src="${ic}" onerror="this.style.display='none'">`:''}<span class="itxt">${it||'＋ 持ち物'}</span></button></div>`;
   }).join('');
 }
-$('setMemos').addEventListener('click', e=>{ const b=e.target.closest('[data-itemkey]'); if(b) openItemPicker(b.dataset.itemkey); });
+$('setMemos').addEventListener('click', e=>{ const b=e.target.closest('[data-itemkey]'); if(!b) return;
+  const k=b.dataset.itemkey;
+  openItemPicker(v=>{ draft.sets[k]=draft.sets[k]||{}; if(v) draft.sets[k].item=v; else delete draft.sets[k].item; renderSetMemos(); });
+});
 
 $('oppSlots').addEventListener('click', e=>{
   if(e.target.id==='addOpp'){ openPicker('相手の構築（タップで追加/解除）', draft.opp, 6, ()=>renderRec(), true); return; }
@@ -767,7 +935,9 @@ function renderTeams(){
   c.innerHTML=teams.map(t=>`<div style="padding:10px 0;border-bottom:1px solid var(--line)">
     <div class="row" style="justify-content:space-between"><input data-tname="${t.id}" value="${esc(t.name)}" style="flex:1;max-width:56%">
       <div class="row"><button class="btn sm" data-tact="${t.id}">${t.id===activeId?'使用中':'使う'}</button><button class="btn sm" data-tdel="${t.id}">削除</button></div></div>
-    <div class="slots" style="margin-top:8px">${t.roster.map((e,i)=>chip(e,{rmKey:'tm:'+t.id+':'+i})).join('')}${t.roster.length<6?`<button class="btn add" data-tadd="${t.id}">＋</button>`:''}</div></div>`).join('');
+    <div class="slots" style="margin-top:8px">${t.roster.map((e,i)=>chip(e,{rmKey:'tm:'+t.id+':'+i, editKey:t.id+':'+i,
+      gear:!!(e.set&&(e.set.item||(e.set.mv||[]).some(x=>x)||Object.values(e.set.sp||{}).some(v=>v)))})).join('')}${t.roster.length<6?`<button class="btn add" data-tadd="${t.id}">＋</button>`:''}</div>
+    <p class="hint" style="margin:6px 0 0">メンバーをタップでセット編集（持ち物・特性・性格・SP・わざ）</p></div>`).join('');
 }
 $('addTeam').addEventListener('click', ()=>{ const id='t'+Date.now(); teams.push({id,name:'構築'+(teams.length+1),roster:[]}); if(!activeId)activeId=id;
   save(LS.teams,teams); save(LS.active,activeId); renderTeams(); refreshAnaFilter(); renderRec(); });
@@ -775,7 +945,8 @@ $('teamList').addEventListener('click', e=>{
   const add=e.target.dataset.tadd; if(add){ const t=teams.find(x=>x.id===add); openPicker('構築（タップで追加/解除）', t.roster, 6, ()=>{save(LS.teams,teams);renderTeams();renderRec();}); return; }
   const rm=e.target.dataset.rm; if(rm&&rm.startsWith('tm:')){ const [,tid,idx]=rm.split(':'); teams.find(x=>x.id===tid).roster.splice(+idx,1); save(LS.teams,teams); renderTeams(); renderRec(); return; }
   const act=e.target.dataset.tact; if(act){ activeId=act; save(LS.active,activeId); renderTeams(); renderRec(); return; }
-  const del=e.target.dataset.tdel; if(del&&confirm('この構築を削除しますか？')){ teams=teams.filter(x=>x.id!==del); if(activeId===del)activeId=teams[0]?teams[0].id:null; save(LS.teams,teams); save(LS.active,activeId); renderTeams(); refreshAnaFilter(); renderRec(); }
+  const del=e.target.dataset.tdel; if(del&&confirm('この構築を削除しますか？')){ teams=teams.filter(x=>x.id!==del); if(activeId===del)activeId=teams[0]?teams[0].id:null; save(LS.teams,teams); save(LS.active,activeId); renderTeams(); refreshAnaFilter(); renderRec(); return; }
+  const ed=e.target.closest('[data-tedit]'); if(ed){ const parts=ed.dataset.tedit.split(':'); hap(8); openSetEditor(parts[0], +parts[1]); }
 });
 $('teamList').addEventListener('input', e=>{ const id=e.target.dataset.tname; if(id){ teams.find(x=>x.id===id).name=e.target.value; save(LS.teams,teams); refreshAnaFilter(); } });
 
