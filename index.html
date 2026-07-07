@@ -265,7 +265,7 @@
       <textarea id="ioArea" style="margin-top:10px" placeholder="ここに貼り付けて「読み込み」で復元"></textarea>
     </div>
     <div class="card"><div class="lbl">レギュレーション表示名</div><input id="regName" placeholder="Reg. M-B" /></div>
-    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v10（分析強化: 選出/先発パターン勝率・相手メタ分析・行タップで履歴ドリルダウン）。データは端末内(localStorage)に保存されます。</p></div>
+    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v10.1（分析強化＋チャンピオンズ新メガ11種対応: ライチュウX/Y・ペンドラー・ズルズキン・シビルドン・シャンデラ・ブリガロン・ゲッコウガ・カラマネロ・ガメノデス・ドラミドロ・タイレーツ）。データは端末内(localStorage)に保存されます。</p></div>
   </section>
 </main>
 
@@ -329,7 +329,8 @@ const PERM_FORMS = {
 };
 const MEGAS = {
   3:[['メガ','venusaur-mega']],6:[['メガY','charizard-megay'],['メガX','charizard-megax']],9:[['メガ','blastoise-mega']],
-  15:[['メガ','beedrill-mega']],18:[['メガ','pidgeot-mega']],65:[['メガ','alakazam-mega']],80:[['メガ','slowbro-mega']],
+  15:[['メガ','beedrill-mega']],18:[['メガ','pidgeot-mega']],26:[['メガX','raichu-megax'],['メガY','raichu-megay']],
+  65:[['メガ','alakazam-mega']],80:[['メガ','slowbro-mega']],
   94:[['メガ','gengar-mega']],115:[['メガ','kangaskhan-mega']],127:[['メガ','pinsir-mega']],130:[['メガ','gyarados-mega']],
   142:[['メガ','aerodactyl-mega']],150:[['メガX','mewtwo-megax'],['メガY','mewtwo-megay']],181:[['メガ','ampharos-mega']],
   208:[['メガ','steelix-mega']],212:[['メガ','scizor-mega']],214:[['メガ','heracross-mega']],229:[['メガ','houndoom-mega']],
@@ -340,7 +341,10 @@ const MEGAS = {
   373:[['メガ','salamence-mega']],376:[['メガ','metagross-mega']],380:[['メガ','latias-mega']],381:[['メガ','latios-mega']],
   384:[['メガ','rayquaza-mega']],398:[['メガ','staraptor-mega']],428:[['メガ','lopunny-mega']],445:[['メガ','garchomp-mega']],
   448:[['メガ','lucario-mega']],460:[['メガ','abomasnow-mega']],475:[['メガ','gallade-mega']],531:[['メガ','audino-mega']],
-  655:[['メガ','delphox-mega']],668:[['メガ','pyroar-mega']],670:[['メガ','floette-eternal']],719:[['メガ','diancie-mega']]
+  545:[['メガ','scolipede-mega']],560:[['メガ','scrafty-mega']],604:[['メガ','eelektross-mega']],609:[['メガ','chandelure-mega']],
+  652:[['メガ','chesnaught-mega']],655:[['メガ','delphox-mega']],658:[['メガ','greninja-mega']],668:[['メガ','pyroar-mega']],
+  670:[['メガ','floette-mega']],687:[['メガ','malamar-mega']],689:[['メガ','barbaracle-mega']],691:[['メガ','dragalge-mega']],
+  719:[['メガ','diancie-mega']],870:[['メガ','falinks-mega']]
 };
 const TOP30 = [[445],[902],[1013],[727],[983],[547],[670,'永遠の花','floette-eternal'],[903],[6],[279],
   [376],[861],[1018],[260],[398],[1000],[981],[700],[655],[303],
