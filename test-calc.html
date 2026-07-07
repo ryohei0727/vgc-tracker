@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="utf-8"><title>calc.js ゴールデンテスト</title>
+<style>body{font-family:monospace;background:#111;color:#eee;padding:16px}
+.ok{color:#3ecf9a}.ng{color:#f27e9c}h1{font-size:16px}</style></head>
+<body>
+<h1>calc.js ゴールデンテスト（scripts/gen_calc_golden.py 生成の期待値と突合）</h1>
+<div id="out">実行中…</div>
+<script src="./calc.js"></script>
+<script>
+fetch('./test-cases.json').then(r=>r.json()).then(cases=>{
+  let pass=0, fail=0, html='';
+  for(const c of cases){
+    const out=CALC.calc({move:c.move, atk:c.atk, def:c.def, field:c.field});
+    const got=out? out.rolls : null;
+    const ok = got && JSON.stringify(got)===JSON.stringify(c.expected);
+    if(ok) pass++; else fail++;
+    html+=`<div class="${ok?'ok':'ng'}">${ok?'✓':'✗'} ${c.name}` +
+      (ok? '' : `<br>　expected: ${JSON.stringify(c.expected)}<br>　got:　　 ${JSON.stringify(got)}`) + `</div>`;
+  }
+  document.getElementById('out').innerHTML =
+    `<div style="font-size:18px" class="${fail?'ng':'ok'}">PASS ${pass} / FAIL ${fail} / TOTAL ${cases.length}</div>` + html;
+  window.__RESULT={pass,fail,total:cases.length};
+});
+</script>
+</body>
+</html>

@@ -94,7 +94,7 @@
   nav{position:fixed;bottom:calc(10px + env(safe-area-inset-bottom));left:12px;right:12px;z-index:6;display:flex;
     background:rgba(21,24,31,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
     border:1px solid var(--line2);border-radius:22px;box-shadow:0 10px 34px rgba(0,0,0,.5);overflow:hidden;max-width:656px;margin:0 auto}
-  nav .ind{position:absolute;top:6px;bottom:6px;left:0;width:25%;padding:0 7px;pointer-events:none;
+  nav .ind{position:absolute;top:6px;bottom:6px;left:0;width:20%;padding:0 7px;pointer-events:none;
     transition:transform .32s var(--spring)}
   nav .ind i{display:block;width:100%;height:100%;border-radius:16px;background:linear-gradient(135deg,rgba(79,156,247,.25),rgba(139,92,246,.25));
     border:1px solid rgba(120,160,255,.28)}
@@ -203,6 +203,35 @@
   .seti:active{background:var(--card2)}
   .seti .mvmeta{margin-left:auto;font-size:11.5px;color:var(--muted);flex-shrink:0;font-variant-numeric:tabular-nums}
   .gearbadge{position:absolute;bottom:17px;right:2px;font-size:10px}
+  /* 計算タブ */
+  .fldgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+  .tglrow{display:flex;gap:6px;flex-wrap:wrap}
+  .tgl2{border:1px solid var(--line2);background:var(--card2);color:var(--sub);border-radius:99px;padding:6px 11px;font-size:12px;font-weight:700;cursor:pointer;
+    transition:transform .15s var(--spring),background .15s,color .15s}
+  .tgl2:active{transform:scale(.93)}
+  .tgl2.on{background:var(--acbg);border-color:var(--ac);color:#cfe2ff;box-shadow:0 0 0 1px var(--ac) inset}
+  .rankgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+  .rankgrid label{font-size:10px;color:var(--muted);font-weight:800;display:block;text-align:center;margin-bottom:2px}
+  .rankgrid select{padding:6px 4px;font-size:13px;text-align:center;background-position:right 6px center;padding-right:20px;border-radius:10px}
+  .dmgrow{padding:8px 0;border-bottom:1px solid var(--line)}
+  .dmgrow:last-child{border-bottom:none}
+  .dmgtop{display:flex;align-items:center;gap:7px;font-size:13.5px}
+  .dmgtop .dpct{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:800;font-size:13px}
+  .dmgtop .dko{font-size:11.5px;color:var(--sub);flex-shrink:0;font-variant-numeric:tabular-nums}
+  .dmgbar{height:7px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:5px;position:relative}
+  .dmgbar>i{position:absolute;top:0;bottom:0;left:0;border-radius:99px}
+  .dmgbar .dmin{opacity:.45}
+  .foehead{display:flex;align-items:center;gap:10px}
+  .foehead img{width:44px;height:44px;object-fit:contain}
+  .foehead .fnm{font-weight:800;font-size:14.5px}
+  .presetrow{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}
+  .sprow-lite .spv{width:76px}
+  .spdrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .spdrow:last-child{border-bottom:none}
+  .spdrow .sv2{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:800}
+  .spdrow.fast .sv2{color:var(--win)} .spdrow.slow .sv2{color:var(--loss)} .spdrow.tie .sv2{color:var(--amber)}
+  .calcbtn{position:absolute;top:-8px;right:-8px;background:linear-gradient(135deg,#39c2d7,#3d7bf5);color:#fff;font-size:9px;border:none;border-radius:9px;
+    padding:3px 8px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.45)}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -278,6 +307,25 @@
     <div class="card"><div id="setList"><p class="empty">型メモがありません</p></div></div>
   </section>
 
+  <!-- 計算 -->
+  <section class="view" id="v-calc">
+    <div class="card">
+      <div class="lbl">自分（アクティブ構築から選択・メガはタップ切替）</div>
+      <div class="slots" id="cMySlots"></div>
+    </div>
+    <div class="card">
+      <div class="lbl">相手 <button class="btn sm" id="cFoePick">選択</button></div>
+      <div id="cFoeBox"><p class="hint" style="margin:4px 0">「選択」から相手ポケモンを指定。記録画面の型メモ「⚔計算」からも飛べます</p></div>
+    </div>
+    <div class="card">
+      <div class="lbl">場の状態・補正</div>
+      <div id="cField"></div>
+    </div>
+    <div class="card"><div class="lbl" id="cAtkLbl">与ダメージ（自分 → 相手）</div><div id="cAtkRes"><p class="empty">自分と相手を選択してください</p></div></div>
+    <div class="card"><div class="lbl" id="cDefLbl">被ダメージ（相手 → 自分）</div><div id="cDefRes"><p class="empty">相手のわざを登録すると計算します</p></div></div>
+    <div class="card"><div class="lbl">素早さ比較</div><div id="cSpeed"><p class="empty">—</p></div></div>
+  </section>
+
   <!-- データ -->
   <section class="view" id="v-data">
     <div class="card">
@@ -291,7 +339,7 @@
       <textarea id="ioArea" style="margin-top:10px" placeholder="ここに貼り付けて「読み込み」で復元"></textarea>
     </div>
     <div class="card"><div class="lbl">レギュレーション表示名</div><input id="regName" placeholder="Reg. M-B" /></div>
-    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v10.2（構築セット登録: データタブでメンバーをタップ→持ち物・特性・性格・能力ポイント(SP)・わざを登録。実数値をリアルタイム表示。次版のダメージ計算に連携）。データは端末内(localStorage)に保存されます。</p></div>
+    <div class="card"><div class="lbl">バージョン</div><p class="hint" style="margin:0">v11（ダメージ計算タブ登場: 構築セット連携・型メモから⚔ワンタップ計算・相手型プリセット記憶・特性/持ち物/天候/フィールド/壁/ランク対応・素早さ比較。計算式はポケモンチャンピオンズ準拠・検証済み）。データは端末内(localStorage)に保存されます。</p></div>
   </section>
 </main>
 
@@ -302,6 +350,7 @@
   <button class="on" data-v="rec"><span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>記録</button>
   <button data-v="log"><span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>戦績</button>
   <button data-v="ana"><span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg></span>分析</button>
+  <button data-v="calc"><span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 7.5h6M9 12h.01M12 12h.01M15 12h.01M9 16h.01M12 16h.01M15 16h.01"/></svg></span>計算</button>
   <button data-v="data"><span class="ni"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h8M16.5 8H20M4 16h3.5M12 16h8"/><circle cx="14" cy="8" r="2.2"/><circle cx="9.5" cy="16" r="2.2"/></svg></span>データ</button>
 </nav>
 
@@ -353,6 +402,7 @@
 </div>
 
 <script src="./pokedex-names.js"></script>
+<script src="./calc.js"></script>
 <script>
 // ===== 基本 =====
 const SD = s => `https://play.pokemonshowdown.com/sprites/gen5/${s}.png`;
@@ -414,9 +464,9 @@ const ITEMS=[
   {n:'オッカのみ (ほのお半減)',s:'occa-berry'},{n:'イトケのみ (みず半減)',s:'passho-berry'},{n:'ソクノのみ (でんき半減)',s:'wacan-berry'},
   {n:'リンドのみ (くさ半減)',s:'rindo-berry'},{n:'ヤチェのみ (こおり半減)',s:'yache-berry'},{n:'ヨプのみ (かくとう半減)',s:'chople-berry'},
   {n:'ビアーのみ (どく半減)',s:'kebia-berry'},{n:'シュカのみ (じめん半減)',s:'shuca-berry'},{n:'バコウのみ (ひこう半減)',s:'coba-berry'},
-  {n:'ウタンのみ (エスパー半減)',s:'payapa-berry'},{n:'タンガのみ (むし半減)',s:'tanga-berry'},{n:'リリバのみ (いわ半減)',s:'charti-berry'},
-  {n:'ナモのみ (ゴースト半減)',s:'kasib-berry'},{n:'ホズのみ (あく半減)',s:'colbur-berry'},{n:'ハバンのみ (ドラゴン半減)',s:'haban-berry'},
-  {n:'ロゼルのみ (フェアリー半減)',s:'roseli-berry'}
+  {n:'ウタンのみ (エスパー半減)',s:'payapa-berry'},{n:'タンガのみ (むし半減)',s:'tanga-berry'},{n:'ヨロギのみ (いわ半減)',s:'charti-berry'},
+  {n:'カシブのみ (ゴースト半減)',s:'kasib-berry'},{n:'ナモのみ (あく半減)',s:'colbur-berry'},{n:'リリバのみ (はがね半減)',s:'babiri-berry'},
+  {n:'ハバンのみ (ドラゴン半減)',s:'haban-berry'},{n:'ロゼルのみ (フェアリー半減)',s:'roseli-berry'},{n:'ホズのみ (ノーマル半減)',s:'chilan-berry'}
 ];
 const ITEM_MAP=Object.fromEntries(ITEMS.map(i=>[i.n,i.s]));
 const itemIcon=n=>{ const s=ITEM_MAP[n]; return s? IIMG+s+'.png':''; };
@@ -722,10 +772,25 @@ function renderSetMemos(){
     const k=selKey(e), it=(draft.sets[k]||{}).item||''; const ic=itemIcon(it);
     return `<div class="setmemo"><img src="${iconOf(e)}" data-fb="${SD(baseSid(e.d))}" onerror="${FBI}" alt="${nameOf(e)}">
       <span class="nmw">${nameOf(e)}</span>
+      <button class="btn sm" data-calck="${k}" style="padding:6px 9px;font-size:12px">⚔計算</button>
       <button class="itembtn${it?'':' empty'}" data-itemkey="${k}">${ic?`<img src="${ic}" onerror="this.style.display='none'">`:''}<span class="itxt">${it||'＋ 持ち物'}</span></button></div>`;
   }).join('');
 }
-$('setMemos').addEventListener('click', e=>{ const b=e.target.closest('[data-itemkey]'); if(!b) return;
+$('setMemos').addEventListener('click', e=>{
+  const cb=e.target.closest('[data-calck]');
+  if(cb){ // 型メモ→ダメージ計算へ（相手・自分の選出を引き継ぎ）
+    const k=cb.dataset.calck;
+    const selE=draft.oppSel.find(x=>selKey(x)===k); if(!selE) return;
+    const baseE=draft.opp.find(x=>selKey(x)===k)||selE;
+    const it=(draft.sets[k]||{}).item||'';
+    // 自分側: 選出済みの先頭をアクティブ構築のメンバーに対応付け
+    const t=activeTeam();
+    if(t&&draft.mySel.length){ const mi=t.roster.findIndex(r=>selKey(r)===selKey(draft.mySel[0]));
+      if(mi>-1){ calcSt.myIdx=mi; calcSt.myMega=draft.mySel[0].m||null; t.roster[mi].set=t.roster[mi].set||defaultSet(); } }
+    setCalcFoe({d:baseE.d,f:baseE.f,s:baseE.s}, it, selE.m||null);
+    hap(10); go('calc'); return;
+  }
+  const b=e.target.closest('[data-itemkey]'); if(!b) return;
   const k=b.dataset.itemkey;
   openItemPicker(v=>{ draft.sets[k]=draft.sets[k]||{}; if(v) draft.sets[k].item=v; else delete draft.sets[k].item; renderSetMemos(); });
 });
@@ -957,8 +1022,209 @@ $('impBtn').addEventListener('click', ()=>{ try{ const o=JSON.parse($('ioArea').
 const regInput=$('regName'); regInput.value=load(LS.reg,'')||'Reg. M-B'; $('regLine').textContent=regInput.value;
 regInput.addEventListener('input',()=>{ save(LS.reg,regInput.value); $('regLine').textContent=regInput.value; });
 
+// ===== 計算タブ（ダメージ計算・素早さ比較） =====
+LS.foes='vgc_foesets';
+let foesets=load(LS.foes,{});
+const FOE_PRESETS=[ // [名前, sp, 性格index]
+  ['無振り',{h:0,a:0,b:0,c:0,d:0,s:0},0], ['HAぶっぱ',{h:32,a:32,b:0,c:0,d:0,s:0},2], ['HBぶっぱ',{h:32,a:0,b:32,c:0,d:0,s:0},5],
+  ['HCぶっぱ',{h:32,a:0,b:0,c:32,d:0,s:0},10], ['HDぶっぱ',{h:32,a:0,b:0,c:0,d:32,s:0},15],
+  ['ASぶっぱ',{h:0,a:32,b:0,c:0,d:0,s:32},22], ['CSぶっぱ',{h:0,a:0,b:0,c:32,d:0,s:32},20] ];
+let calcSt={ myIdx:-1, myMega:null, foe:null, foeMega:null, foeTune:false,
+  f:{weather:'',terrain:'',spread:false,screen:false,crit:false,hh:false,aBurn:false,fBurn:false,pinch:false,foeFull:true,myTail:false,foeTail:false,foeScarf:false},
+  rank:{ma:0,mb:0,mc:0,md:0,ms:0,fa:0,fb:0,fc:0,fd:0,fs:0} };
+
+function cMyEntry(){ const t=activeTeam(); return (t&&t.roster[calcSt.myIdx])||null; }
+function foeSet(){ if(!calcSt.foe) return null; const k=calcSt.foe.k;
+  return foesets[k]=foesets[k]||{item:'',ab:'',nat:0,sp:{h:0,a:0,b:0,c:0,d:0,s:0},mv:[null,null,null,null]}; }
+function saveFoes(){ save(LS.foes,foesets); }
+// メガ切替を考慮した側データ（実数値/タイプ/特性/持ち物/体重）
+function buildSide(e, set, megaName){
+  let sid=e.s, ab=set.ab||'';
+  if(megaName){ const mg=(MEGAS[e.d]||[]).find(m=>m[0]===megaName); if(mg) sid=mg[1]; }
+  const d=DEX? (DEX.forms[norm(sid)] || DEX.base[String(e.d)]) : null;
+  if(!d) return null;
+  if(megaName && d.a && d.a.length) ab=d.a[0];   // メガは特性固定
+  return { stats:statsOf(d.b,set.sp,set.nat), types:d.t, ability:ab, item:megaName?'メガストーン':(set.item||''), weight:d.w };
+}
+function megaStates(d){ return MEGAS[d]? [null,...MEGAS[d].map(m=>m[0])] : [null]; }
+
+function setCalcFoe(e, presetItem, megaName){
+  const k=selKey(e);
+  calcSt.foe={e:{d:e.d,f:e.f||null,s:e.s,m:null}, k};   // e はベースフォルム（メガは foeMega で管理）
+  calcSt.foeMega=megaName||null;
+  const fs=foeSet();
+  if(presetItem && presetItem!=='メガストーン' && !fs.item) fs.item=presetItem;   // 型メモの持ち物を初期値に
+  saveFoes(); renderCalc();
+}
+
+function dmgRowHTML(m, out){
+  const tj=`<span class="tchip" style="background:${TYPE_C[m.t]||'#666'}">${TYPE_JA[out&&out.moveType||m.t]||m.t}</span>`;
+  if(!out) return `<div class="dmgrow"><div class="dmgtop">${tj}<span>${m.ja}</span><span class="dko">変化技</span></div></div>`;
+  if(out.immune) return `<div class="dmgrow"><div class="dmgtop">${tj}<span>${m.ja}</span><span class="dko">${out.immune}</span><span class="dpct">0%</span></div></div>`;
+  const col= out.maxPct>=100?'var(--loss)': out.maxPct>=50?'var(--amber)':'var(--ac)';
+  const effTag= out.eff!==1? `<span class="tag" style="padding:0 6px">×${out.eff}</span>`:'';
+  const hits= out.nHits>1? `<span class="tag" style="padding:0 6px">${out.nHits}発計</span>`:'';
+  return `<div class="dmgrow"><div class="dmgtop">${tj}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.ja}</span>${effTag}${hits}
+      <span class="dko">${out.ko.text}</span><span class="dpct" style="color:${col}">${out.minPct}〜${out.maxPct}%</span></div>
+    <div class="dmgbar"><i class="dmin" style="width:${Math.min(100,out.maxPct)}%;background:${col}"></i><i style="width:${Math.min(100,out.minPct)}%;background:${col}"></i></div>
+    <div class="hint" style="margin:3px 0 0;font-size:11px">${out.min}〜${out.max} / HP${out.defHP}</div></div>`;
+}
+
+function calcOne(m, atkSide, defSide, isMyAttack){
+  const F=calcSt.f, R=calcSt.rank;
+  const out=CALC.calc({ move:m,
+    atk:Object.assign({},atkSide,{ status:(isMyAttack?F.aBurn:F.fBurn)?'やけど':'',
+      rank: isMyAttack? {a:R.ma,b:R.mb,c:R.mc} : {a:R.fa,b:R.fb,c:R.fc},
+      pinch: isMyAttack && F.pinch }),
+    def:Object.assign({},defSide,{ rank: isMyAttack? {a:R.fa,b:R.fb,d:R.fd} : {a:R.ma,b:R.mb,d:R.md},
+      hpFull: isMyAttack? F.foeFull : true }),
+    field:{ weather:F.weather, terrain:F.terrain, doubles:true, spread:!!(F.spread&&m.sp), screen:F.screen,
+      crit:F.crit, helpingHand:F.hh } });
+  if(out&&!out.immune) out.defHP=defSide.stats[0];
+  return out;
+}
+
+function renderCalc(){
+  const t=activeTeam();
+  // 自分スロット
+  $('cMySlots').innerHTML = (t&&t.roster.length)? t.roster.map((e,i)=>{
+    const sel=i===calcSt.myIdx;
+    const disp= sel&&calcSt.myMega? Object.assign({},e,{m:calcSt.myMega, s:(MEGAS[e.d]||[]).find(m=>m[0]===calcSt.myMega)?.[1]||e.s}) : e;
+    return chip(disp,{tapKey:'cmy:'+i, sel, megaAvail:!!MEGAS[e.d]});
+  }).join('') : '<p class="hint">データタブで構築を登録してください</p>';
+  // 相手ボックス
+  const fs=foeSet();
+  if(calcSt.foe){
+    const fe=calcSt.foe.e;
+    const fdisp= calcSt.foeMega? Object.assign({},fe,{m:calcSt.foeMega, s:(MEGAS[fe.d]||[]).find(m=>m[0]===calcSt.foeMega)?.[1]||fe.s}) : fe;
+    const fd=dexOf(fdisp);
+    const abList=(fd&&fd.a)||[];
+    const abOpts='<option value="">特性—</option>'+abList.map(a=>`<option ${a===fs.ab?'selected':''}>${a}</option>`).join('')
+      +(fs.ab&&!abList.includes(fs.ab)?`<option selected>${esc(fs.ab)}</option>`:'');
+    const ic=itemIcon(fs.item);
+    const st=fd? statsOf(fd.b,fs.sp,fs.nat):null;
+    $('cFoeBox').innerHTML=`
+      <div class="foehead"><img src="${iconOf(fdisp)}" data-fb="${SD(baseSid(fe.d))}" onerror="${FBI}">
+        <div style="flex:1;min-width:0"><div class="fnm">${nameOf(fdisp)}</div>
+        <div>${fd? fd.t.map(x=>`<span class="tchip" style="background:${TYPE_C[x]}">${TYPE_JA[x]}</span>`).join(' '):''}</div></div>
+        ${MEGAS[fe.d]?`<button class="btn sm" id="cFoeMega">${calcSt.foeMega||'メガ'}${calcSt.foeMega?'':'OFF'}</button>`:''}</div>
+      ${st?`<div class="statgrid" style="margin-top:8px">${SPL.map(k=>`<span class="sk">${k}</span>`).join('')}${st.map(v=>`<span class="sv">${v}</span>`).join('')}</div>`:''}
+      <div class="presetrow">${FOE_PRESETS.map((p,i)=>`<button class="tgl2" data-fpre="${i}">${p[0]}</button>`).join('')}
+        <button class="tgl2${calcSt.foeTune?' on':''}" id="cFoeTune">詳細調整</button></div>
+      ${calcSt.foeTune? `<div class="serow"><span class="selbl">性格</span><select id="cFoeNat">${NATURES.map((n,i)=>`<option value="${i}" ${i===fs.nat?'selected':''}>${n[0]}${n[1]!==n[2]?`（${SPL[n[1]]}↑${SPL[n[2]]}↓）`:''}</option>`).join('')}</select></div>`
+        + SPK.map((k,i)=>`<div class="sprow sprow-lite"><span class="spk">${SPL[i]}</span><input type="range" min="0" max="32" step="1" value="${fs.sp[k]||0}" data-fspk="${k}"><span class="spv" data-fspv="${i}">${fs.sp[k]||0}${st?' → '+st[i]:''}</span></div>`).join('') : ''}
+      <div class="serow" style="margin-top:8px"><span class="selbl">持ち物</span><button class="itembtn${fs.item?'':' empty'}" id="cFoeItem" style="width:auto;min-width:50%;max-width:none">${ic?`<img src="${ic}" onerror="this.style.display='none'">`:''}<span class="itxt">${fs.item||'＋ 持ち物'}</span></button></div>
+      <div class="serow"><span class="selbl">特性</span><select id="cFoeAb">${abOpts}</select></div>
+      <div class="seclbl">相手のわざ（被ダメ計算用）</div>
+      <div class="mvbtns">${[0,1,2,3].map(i=>{ const en=fs.mv&&fs.mv[i]; const m=en?MOVE_BY_EN[en]:null;
+        return `<button class="mvbtn${m?'':' empty'}" data-fmv="${i}">${m?`<span class="tchip" style="background:${TYPE_C[m.t]}">${TYPE_JA[m.t]}</span><span class="mvtxt">${m.ja}</span>`:'＋ わざ'}</button>`; }).join('')}</div>`;
+  }
+  // 場・補正
+  const F=calcSt.f, R=calcSt.rank;
+  const tg=(k,lbl)=>`<button class="tgl2${F[k]?' on':''}" data-ctg="${k}">${lbl}</button>`;
+  const rk=(k,lbl)=>`<div><label>${lbl}</label><select data-crk="${k}">${[-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6].map(v=>`<option value="${v}" ${v===R[k]?'selected':''}>${v>0?'+':''}${v}</option>`).join('')}</select></div>`;
+  $('cField').innerHTML=`
+    <div class="fldgrid">
+      <div><label style="font-size:10px;color:var(--muted);font-weight:800">天候</label><select data-csel="weather">
+        <option value="">なし</option><option value="sun" ${F.weather==='sun'?'selected':''}>はれ</option><option value="rain" ${F.weather==='rain'?'selected':''}>あめ</option>
+        <option value="sand" ${F.weather==='sand'?'selected':''}>すなあらし</option><option value="snow" ${F.weather==='snow'?'selected':''}>ゆき</option></select></div>
+      <div><label style="font-size:10px;color:var(--muted);font-weight:800">フィールド</label><select data-csel="terrain">
+        <option value="">なし</option><option value="electric" ${F.terrain==='electric'?'selected':''}>エレキ</option><option value="grassy" ${F.terrain==='grassy'?'selected':''}>グラス</option>
+        <option value="psychic" ${F.terrain==='psychic'?'selected':''}>サイコ</option><option value="misty" ${F.terrain==='misty'?'selected':''}>ミスト</option></select></div>
+    </div>
+    <div class="tglrow">${tg('spread','全体技(2体)')}${tg('screen','壁')}${tg('crit','急所')}${tg('hh','てだすけ')}${tg('aBurn','自やけど')}${tg('fBurn','相やけど')}${tg('pinch','HP1/3(自)')}${tg('foeFull','相手HP満タン')}${tg('myTail','自おいかぜ')}${tg('foeTail','相おいかぜ')}${tg('foeScarf','相スカーフ想定')}</div>
+    <div class="rankgrid">${rk('ma','自A')}${rk('mb','自B')}${rk('mc','自C')}${rk('md','自D')}${rk('fa','相A')}${rk('fb','相B')}${rk('fc','相C')}${rk('fd','相D')}</div>`;
+  renderCalcRes();
+}
+
+function renderCalcRes(){
+  const me=cMyEntry(), fs=foeSet();
+  const mySide = me? buildSide(me, me.set||defaultSet(), calcSt.myMega) : null;
+  const foeSide = calcSt.foe? buildSide(calcSt.foe.e, fs, calcSt.foeMega) : null;
+  // 与ダメ
+  if(mySide&&foeSide){
+    const mvs=((me.set&&me.set.mv)||[]).filter(x=>x);
+    $('cAtkLbl').textContent=`与ダメージ（${jaName(me.d)} → ${jaName(calcSt.foe.e.d)}）`;
+    $('cAtkRes').innerHTML = mvs.length? mvs.map(en=>{ const m=MOVE_BY_EN[en]; if(!m) return '';
+        return dmgRowHTML(m, m.c===0? null : calcOne(m,mySide,foeSide,true)); }).join('')
+      : '<p class="empty">データタブでわざを登録すると計算します</p>';
+    // 被ダメ
+    const fmv=(fs.mv||[]).filter(x=>x);
+    $('cDefLbl').textContent=`被ダメージ（${jaName(calcSt.foe.e.d)} → ${jaName(me.d)}）`;
+    $('cDefRes').innerHTML = fmv.length? fmv.map(en=>{ const m=MOVE_BY_EN[en]; if(!m) return '';
+        return dmgRowHTML(m, m.c===0? null : calcOne(m,foeSide,mySide,false)); }).join('')
+      : '<p class="empty">相手のわざを登録すると計算します</p>';
+  } else {
+    $('cAtkRes').innerHTML='<p class="empty">自分と相手を選択してください</p>';
+    $('cDefRes').innerHTML='<p class="empty">自分と相手を選択してください</p>';
+  }
+  // 素早さ比較
+  if(mySide&&foeSide&&DEX){
+    const F=calcSt.f;
+    const myScarf=(me.set&&me.set.item==='こだわりスカーフ')&&!calcSt.myMega;
+    const myS=CALC.speedOf(mySide.stats[5],{rank:calcSt.rank.ms,scarf:myScarf,tailwind:F.myTail});
+    const fe=calcSt.foe.e;
+    const sid=calcSt.foeMega? ((MEGAS[fe.d]||[]).find(m=>m[0]===calcSt.foeMega)||[])[1]||fe.s : fe.s;
+    const fb=(DEX.forms[norm(sid)]||DEX.base[String(fe.d)]).b;
+    const lines=[ ['最速（S32↑）', Math.floor((fb[5]+32+20.5)*1.1)], ['準速（S32）', fb[5]+32+20], ['無振り', fb[5]+20] ];
+    $('cSpeed').innerHTML = `<div class="spdrow"><span>自分 ${jaName(me.d)}</span><span class="sv2">${myS}${myScarf?' (スカーフ込)':''}${F.myTail?' (追い風込)':''}</span></div>`
+      + lines.map(([lbl,s])=>{ const eff=CALC.speedOf(s,{scarf:F.foeScarf,tailwind:F.foeTail});
+          const cls= myS>eff?'fast': myS<eff?'slow':'tie';
+          return `<div class="spdrow ${cls}"><span>相手 ${lbl}${F.foeScarf?'×スカーフ':''}${F.foeTail?'×追い風':''}</span><span class="sv2">${eff}（${cls==='fast'?'抜ける':cls==='slow'?'抜かれる':'同速'}）</span></div>`; }).join('');
+  } else $('cSpeed').innerHTML='<p class="empty">自分と相手を選択すると比較します</p>';
+}
+
+// 計算タブのイベント
+$('cMySlots').addEventListener('click', e=>{
+  const t=activeTeam(); if(!t) return;
+  const mt=e.target.closest('[data-mtog]');
+  if(mt){ e.stopPropagation(); const i=+mt.dataset.mtog.split(':')[1];
+    if(i===calcSt.myIdx){ const sts=megaStates(t.roster[i].d); calcSt.myMega=sts[(sts.indexOf(calcSt.myMega)+1)%sts.length]; hap(12); renderCalc(); }
+    return; }
+  const c=e.target.closest('[data-tap]');
+  if(c){ const i=+c.dataset.tap.split(':')[1]; calcSt.myIdx=i; calcSt.myMega=null;
+    const ent=t.roster[i]; ent.set=ent.set||defaultSet(); hap(9); renderCalc(); }
+});
+$('cFoePick').addEventListener('click', ()=>{
+  const tmp=[];
+  openPicker('相手ポケモンを選択', tmp, 1, ()=>{ if(tmp.length){ setCalcFoe(tmp[0]); } }, true);
+});
+$('cFoeBox').addEventListener('click', e=>{
+  const fs=foeSet(); if(!fs) return;
+  if(e.target.id==='cFoeMega'){ const sts=megaStates(calcSt.foe.e.d); calcSt.foeMega=sts[(sts.indexOf(calcSt.foeMega)+1)%sts.length]; hap(12); renderCalc(); return; }
+  if(e.target.id==='cFoeTune'){ calcSt.foeTune=!calcSt.foeTune; renderCalc(); return; }
+  const pre=e.target.dataset.fpre;
+  if(pre!==undefined){ const p=FOE_PRESETS[+pre]; fs.sp=Object.assign({},p[1]); fs.nat=p[2]; saveFoes(); hap(9); renderCalc(); return; }
+  if(e.target.closest('#cFoeItem')){ openItemPicker(v=>{ fs.item=v; saveFoes(); renderCalc(); }); return; }
+  const fm=e.target.closest('[data-fmv]');
+  if(fm){ const slot=+fm.dataset.fmv; openMovePicker(m=>{ fs.mv=fs.mv||[null,null,null,null]; fs.mv[slot]=m?m.en:null; saveFoes(); renderCalc(); }); }
+});
+$('cFoeBox').addEventListener('change', e=>{
+  const fs=foeSet(); if(!fs) return;
+  if(e.target.id==='cFoeAb'){ fs.ab=e.target.value; saveFoes(); renderCalcRes(); }
+  if(e.target.id==='cFoeNat'){ fs.nat=+e.target.value; saveFoes(); renderCalc(); }
+  if(e.target.dataset.fspk){ saveFoes(); }
+});
+$('cFoeBox').addEventListener('input', e=>{
+  const k=e.target.dataset.fspk; if(!k) return; const fs=foeSet(); if(!fs) return;
+  fs.sp[k]=+e.target.value;
+  const fe=calcSt.foe.e; const sid=calcSt.foeMega? ((MEGAS[fe.d]||[]).find(m=>m[0]===calcSt.foeMega)||[])[1]||fe.s : fe.s;
+  const d=DEX? (DEX.forms[norm(sid)]||DEX.base[String(fe.d)]):null;
+  if(d){ const st=statsOf(d.b,fs.sp,fs.nat);
+    document.querySelectorAll('#cFoeBox [data-fspv]').forEach(el=>{ const i=+el.dataset.fspv; el.textContent=(fs.sp[SPK[i]]||0)+' → '+st[i]; });
+    document.querySelectorAll('#cFoeBox .statgrid .sv').forEach((el,i)=>el.textContent=st[i]); }
+  renderCalcRes();
+});
+$('cField').addEventListener('click', e=>{
+  const k=e.target.dataset.ctg; if(k){ calcSt.f[k]=!calcSt.f[k]; e.target.classList.toggle('on',calcSt.f[k]); hap(7); renderCalcRes(); }
+});
+$('cField').addEventListener('change', e=>{
+  const s=e.target.dataset.csel; if(s){ calcSt.f[s]=e.target.value; renderCalcRes(); return; }
+  const r=e.target.dataset.crk; if(r){ calcSt.rank[r]=+e.target.value; renderCalcRes(); }
+});
+
 // ===== ナビ（インジケータ＋方向スライド）=====
-const ORDER=['rec','log','ana','data'];
+const ORDER=['rec','log','ana','calc','data'];
 let curIdx=0;
 function go(v){
   const idx=ORDER.indexOf(v); const dir=idx>=curIdx?1:-1;
@@ -970,7 +1236,7 @@ function go(v){
   $('navInd').style.transform=`translateX(${idx*100}%)`;
   $('saveBar').classList.toggle('show', v==='rec');
   curIdx=idx;
-  if(v==='log')renderLog(); if(v==='ana'){refreshAnaFilter();renderAna();} if(v==='data')renderTeams();
+  if(v==='log')renderLog(); if(v==='ana'){refreshAnaFilter();renderAna();} if(v==='calc')renderCalc(); if(v==='data')renderTeams();
   window.scrollTo(0,0);
 }
 document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{ hap(6); go(b.dataset.v); }));
